@@ -1,11 +1,11 @@
-# Excavator - Angular
+# Excavator - Admin Panel
 
 Excavator is businees management application admin panel of Excavator, Dozer, Poclain, Tipper, Truck and Earth Mover business developed with Angular 8, Angular Material and RESTful APIs using Nodejs, ExpressJS, MongoDB and Mongoose.
 
 ## The Theme
 
 The ready theme used for front end development is Fuse
-[Click here](http://fusetheme.com/) to see theme template.
+[Click here](http://fusetheme.com/admin-templates/angular/) to see theme template.
 
 ## Development server
 
@@ -33,7 +33,7 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 
 ## APIs documentation
 
-The APIs documentation is implemented with the help of Swagger. Visit the url http://localhost:3000/swagger to check the APIs
+The APIs documentation is implemented with the help of Swagger. Visit the url `http://localhost:3000/swagger` to check the APIs
 
 
 ## Further help

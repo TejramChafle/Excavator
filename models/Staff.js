@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const StaffSchema = mongoose.Schema({
 	_id: mongoose.Schema.Types.ObjectId,
-    contact_id:{
+    contact_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Contact',
 		required: true

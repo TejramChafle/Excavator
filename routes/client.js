@@ -1,29 +1,29 @@
 var express     = require('express');
 var mongoose    = require('mongoose');
-var Vehicle     = require('../models/Vehicle');
+var Client     = require('../models/Client');
 const auth      = require('../auth');
 
 var router      = express.Router();
 
 /**
  * @swagger
- * /vehicle:
+ * /client:
  *   get:
  *     tags:
- *       - Vehicle
- *     description: Returns all vehicles
+ *       - Client
+ *     description: Returns all clients
  *     security:
  *       - bearerAuth: []
  *     produces:
  *       - application/json
  *     responses:
  *       200:
- *         description: An array of vehicles
+ *         description: An array of clients
  */
-// GET VEHICLES (Only active) WITH filter & pagination
+// GET CLIENTS (Only active) WITH filter & pagination
 router.get('/', auth, (req, resp) => {
-    Vehicle.where({ is_active: true }).exec().then(vehicles => {
-        return resp.status(200).json(vehicles);
+    Client.where({ is_active: true }).exec().then(clients => {
+        return resp.status(200).json(clients);
     }).catch(error => {
         console.log('error : ', error);
         // 500 : Internal Sever Error. The request was not completed. The server met an unexpected condition.
@@ -36,28 +36,28 @@ router.get('/', auth, (req, resp) => {
 
 /**
  * @swagger
- * /vehicle/{id}:
+ * /client/{id}:
  *   get:
  *     tags:
- *       - Vehicle
- *     description: Returns a single vehicle
+ *       - Client
+ *     description: Returns a single client
  *     produces:
  *       - application/json
  *     parameters:
  *       - name: id
- *         description: Vehicle's id
+ *         description: Client's id
  *         in: path
  *         required: true
  *         type: string
  *     responses:
  *       200:
- *         description: A single vehicle
+ *         description: A single client
  */
 
-// GET SINGLE VEHICLE BY ID
+// GET SINGLE CLIENT BY ID
 router.get('/:id', auth, (req, resp, next) => {
-    Vehicle.findById(req.params.id).exec().then(vehicle => {
-        return resp.status(200).json(vehicle);
+    Client.findById(req.params.id).exec().then(client => {
+        return resp.status(200).json(client);
     }).catch(error => {
         console.log('error : ', error);
         // 204 : No content. There is no content to send for this request, but the headers may be useful.
@@ -70,56 +70,59 @@ router.get('/:id', auth, (req, resp, next) => {
 
 /**
  * @swagger
- * /vehicle:
+ * /client:
  *   post:
  *     tags:
- *       - Vehicle
- *     description: Creates a new vehicle
+ *       - Client
+ *     description: Creates a new client
  *     produces:
  *       - application/json
  *     parameters:
- *       - name: vehicle
- *         description: Vehicle object
+ *       - name: client
+ *         description: Client object
  *         in: body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/Vehicle'
+ *           $ref: '#/definitions/Client'
  *     responses:
  *       201:
- *         description: Vehicle created successfully
+ *         description: Client created successfully
  */
-// SAVE VEHICLE
+// SAVE CLIENT
 router.post('/', auth, (req, resp, next) => {
-    // First check if the vehicle with name, and number already exists
-    Vehicle.findOne({ name: req.body.name, number: req.body.number, is_active: true })
+    // First check if the conact with name and address already exists.
+    Client.findOne({ firstname: req.body.name, address: req.body.address, is_active: true })
         .exec()
-        .then(vehicle => {
-            // If the vehicle with name and number already exists, then return error
-            if (vehicle) {
+        .then(client => {
+            // If the client with name and address already exists, then return error
+            if (client) {
                 // 409 : Conflict. The request could not be completed because of a conflict.
                 return resp.status(409).json({
-                    message: "The vehicle with name " + req.body.firstname + " " + req.body.lastname + " and mobile number " + req.body.mobile + " already exist."
+                    message: "The client with name " + req.body.name + " and address " + req.body.address + " already exist."
                 });
             } else {
-                // Since the vehicle doesn't exist, then save the detail
+                // Since the client doesn't exist, then save the detail
                 console.log(req.body);
-                const vehicle = new Vehicle({
+                const client = new Client({
                     _id: new mongoose.Types.ObjectId(),
                     name: req.body.name,
-                    ownership: req.body.ownership,
-                    type: req.body.type,
-                    number: req.body.number,
+                    contact_person: req.body.contact_person,
+                    address: req.body.address,
+                    email: req.body.email,
+                    phone: req.body.phone,
+                    mobile: req.body.mobile,
+                    description: req.body.description,
                     created_by: req.body.created_by,
                     updated_by: req.body.updated_by,
                     created_date: Date.now(),
                     updated_date: Date.now()
                 });
 
-                vehicle.save()
+                client.save()
                     .then(result => {
                         console.log(result);
                         return resp.status(201).json({
-                            message: "Vehicle created successfully",
+                            message: "Client created successfully",
                             result: result
                         });
                     })
@@ -142,27 +145,27 @@ router.post('/', auth, (req, resp, next) => {
 
 /**
 * @swagger
-* /vehicle/{id}:
+* /client/{id}:
 *   put:
 *     tags:
-*       - Vehicle
-*     description: Updates a single vehicle
+*       - Client
+*     description: Updates a single client
 *     produces: application/json
 *     parameters:
-*       name: vehicle
+*       name: client
 *       in: body
-*       description: Fields for the Vehicle resource
+*       description: Fields for the Client resource
 *       schema:
 *         type: array
-*         $ref: '#/definitions/Vehicle'
+*         $ref: '#/definitions/Client'
 *     responses:
 *       200:
 *         description: Successfully updated
 */
-// UPDATE VEHICLE
+// UPDATE CLIENT
 router.put('/:id', auth, (req, resp, next) => {
-    Vehicle.findByIdAndUpdate(req.params.id, req.body).exec().then(vehicle => {
-        return resp.status(200).json(vehicle);
+    Client.findByIdAndUpdate(req.params.id, req.body).exec().then(client => {
+        return resp.status(200).json(client);
     }).catch(error => {
         // 500 : Internal Sever Error. The request was not completed. The server met an unexpected condition.
         return resp.status(500).json({
@@ -174,16 +177,16 @@ router.put('/:id', auth, (req, resp, next) => {
 
 /**
  * @swagger
- * /vehicle/{id}:
+ * /client/{id}:
  *   delete:
  *     tags:
- *       - Vehicle
- *     description: Deletes a single vehicle
+ *       - Client
+ *     description: Deletes a single client
  *     produces:
  *       - application/json
  *     parameters:
  *       - name: id
- *         description: Vehicle's id
+ *         description: Client's id
  *         in: path
  *         required: true
  *         type: integer
@@ -191,10 +194,10 @@ router.put('/:id', auth, (req, resp, next) => {
  *       200:
  *         description: Successfully deleted
  */
-// DELETE VEHICLE (Hard delete. This will delete the entire vehicle detail. Only application admin should be allowed to perform this action )
+// DELETE CLIENT (Hard delete. This will delete the entire client detail. Only application admin should be allowed to perform this action )
 router.delete('/:id', auth, (req, resp, next) => {
-    Vehicle.findByIdAndRemove(req.params.id).exec().then(vehicle => {
-        return resp.status(200).json(vehicle);
+    Client.findByIdAndRemove(req.params.id).exec().then(client => {
+        return resp.status(200).json(client);
     }).catch(error => {
         console.log('error : ', error);
         // 500 : Internal Sever Error. The request was not completed. The server met an unexpected condition.

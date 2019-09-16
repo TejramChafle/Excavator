@@ -11,7 +11,7 @@ var router      = express.Router();
 
 /**
  * @swagger
- * /auth:
+ * /auth/login:
  *   post:
  *     tags:
  *       - Auth

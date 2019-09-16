@@ -16,9 +16,9 @@ mongoose.connect('mongodb://localhost/excavator')
 
 // mongoose.connect('mongodb+srv://tejram:wizbeeuser@cluster0-qeebj.azure.mongodb.net/test?retryWrites=true')
 
-var authRouter = require('./routes/auth');
-var contactRouter = require('./routes/contact');
-var userRouter = require('./routes/user');
+var authRouter      = require('./routes/auth');
+var contactRouter   = require('./routes/contact');
+var userRouter      = require('./routes/user');
 
 var app = express();
 
@@ -62,9 +62,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'dist/excavator')));
 
-app.use('/auth', express.static(path.join(__dirname, 'dist/excavator')));
-app.use('/contact', express.static(path.join(__dirname, 'dist/excavator')));
-app.use('/user', express.static(path.join(__dirname, 'dist/excavator')));
+// app.use('/auth', express.static(path.join(__dirname, 'dist/excavator')));
+// app.use('/contact', express.static(path.join(__dirname, 'dist/excavator')));
+// app.use('/user', express.static(path.join(__dirname, 'dist/excavator')));
 
 app.use('/swagger', express.static(path.join(__dirname, 'swagger')));
 

@@ -28,11 +28,11 @@ const WorkDoneSchema = mongoose.Schema({
         type: String,
 		required: true
     },
-    operator: {
+    workers: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Staff',
     	required: true
-    },
+    }],
     rate: {
     	type: Number,
     	required: true

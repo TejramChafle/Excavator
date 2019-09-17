@@ -66,6 +66,7 @@ app.use(express.static(path.join(__dirname, 'dist/excavator')));
 // app.use('/contact', express.static(path.join(__dirname, 'dist/excavator')));
 // app.use('/user', express.static(path.join(__dirname, 'dist/excavator')));
 
+app.use('/sample', express.static(path.join(__dirname, 'dist/excavator')));
 app.use('/swagger', express.static(path.join(__dirname, 'swagger')));
 
 // Set the route for the incoming request

@@ -5,7 +5,8 @@ const BillingSchema = new mongoose.Schema({
     // collection of works for which bill will be created
     works: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'WorkDone'
+        ref: 'WorkDone',
+        required: true
     }],
     // contractor/client id
     billing_to: {

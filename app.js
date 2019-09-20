@@ -16,10 +16,6 @@ mongoose.connect('mongodb://localhost/excavator')
 
 // mongoose.connect('mongodb+srv://tejram:wizbeeuser@cluster0-qeebj.azure.mongodb.net/test?retryWrites=true')
 
-var authRouter      = require('./routes/auth');
-var contactRouter   = require('./routes/contact');
-var userRouter      = require('./routes/user');
-
 var app = express();
 
 
@@ -60,19 +56,27 @@ app.get('/swagger.json', function (req, res) {
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'dist/excavator')));
+app.use(express.static(path.join(__dirname, 'dist/fuse')));
 
-// app.use('/auth', express.static(path.join(__dirname, 'dist/excavator')));
-// app.use('/contact', express.static(path.join(__dirname, 'dist/excavator')));
-// app.use('/user', express.static(path.join(__dirname, 'dist/excavator')));
 
-app.use('/sample', express.static(path.join(__dirname, 'dist/excavator')));
+// SET the frontend/angular routes
+app.use('/sample', express.static(path.join(__dirname, 'dist/fuse')));
 app.use('/swagger', express.static(path.join(__dirname, 'swagger')));
 
+
 // Set the route for the incoming request
-app.use('/auth', authRouter);
-app.use('/contact', contactRouter);
-app.use('/user', userRouter);
+app.use('/auth', require('./routes/auth'));
+app.use('/bill', require('./routes/bill'));
+app.use('/client', require('./routes/client'));
+app.use('/contact', require('./routes/contact'));
+app.use('/contractor', require('./routes/contractor'));
+app.use('/fuel-resource', require('./routes/fuel-resource'));
+app.use('/service', require('./routes/service'));
+app.use('/tag', require('./routes/tag'));
+app.use('/user', require('./routes/user'));
+app.use('/vehicle', require('./routes/vehicle'));
+app.use('/work', require('./routes/work'));
+
 
 
 // catch 404 and forward to error handler

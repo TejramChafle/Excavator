@@ -2,7 +2,8 @@ var mongoose = require('mongoose');
 
 var MaintenanceSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    work: {
+    // Maintenace type (Servicing, Failure Repair, Part Replacement, Puncture, Other)
+    type: {
         type: String,
         required: true
     },
@@ -31,14 +32,19 @@ var MaintenanceSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    cost: {
+    bill_amount: {
         type: String,
+        required: false
+    },
+    bill_number: {
+        type: Number,
         required: false
     },
     is_paid: {
         type: Boolean,
         required: false
     },
+    // Work done in detail
     description: {
         type: String,
         required: false

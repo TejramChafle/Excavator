@@ -28,15 +28,15 @@ var router      = express.Router();
  */
 // SAVE ATTENDANCE
 router.post('/', auth, (req, resp, next) => {
-    // First check if the attendance of the day is marked
-    Attendance.findOne({ date: req.body.date, is_active: true })
+    // First check if the attendance of the day and shift is marked
+    Attendance.findOne({ date: req.body.date, shift: req.body.shift, is_active: true })
         .exec()
         .then(attendance => {
             // If the attendance of the day already marked, then return error
             if (attendance) {
                 // 409 : Conflict. The request could not be completed because of a conflict.
                 return resp.status(409).json({
-                    message: "The attendance of the date " + req.body.date + " is already marked."
+                    message: "The attendance of the date " + req.body.date + "for " + req.body.shift + " shift is already marked."
                 });
             } else {
                 // Since the attendace is not marked, then save the detail

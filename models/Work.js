@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const WorkDoneSchema = mongoose.Schema({
+const WorkSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     service_id: {
         type: mongoose.Schema.Types.ObjectId,
@@ -75,9 +75,9 @@ const WorkDoneSchema = mongoose.Schema({
     }
 });
 
-const WorkDone = module.exports = mongoose.model('WorkDone', WorkDoneSchema);
+const Work = module.exports = mongoose.model('Work', WorkSchema);
 
-/* WorkDoneSchema.virtual('PMDetails', {
+/* WorkSchema.virtual('PMDetails', {
   ref: 'Metrics', // The model to use
   localField: 'metid', // Find people where `localField`
   foreignField: 'metid', // is equal to `foreignField`

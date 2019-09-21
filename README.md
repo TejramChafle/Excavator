@@ -35,3 +35,12 @@ The APIs documentation is implemented with the help of Swagger. Visit the url `h
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
+
+## Pagination
+
+Install the pagination package with the `npm install mongoose-paginate`. For more detail visit [Read this.](https://github.com/edwardhotchkiss/mongoose-paginate)
+
+
+
+
+

@@ -32,23 +32,23 @@ const TodoSchema = new mongoose.Schema({
     },
     is_all_day: {
         type: Boolean,
-        default: true
+        default: false
     },
     is_completed: {
         type: Boolean,
-        default: true
+        default: false
     },
     is_priority: {
         type: Boolean,
-        default: true
+        default: false
     },
     is_starred: {
         type: Boolean,
-        default: true
+        default: false
     },
     location: {
         type: String,
-        default: true
+        trim: true
     },
     // list of ids assigned to the task
     tag_ids: [{

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Paginate = require('mongoose-paginate');
 
 const ContactSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
@@ -48,6 +49,11 @@ const ContactSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    tag: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Tag',
+        required: false
+    },
     // soft delete flag
     is_active: {
         type: Boolean,
@@ -78,7 +84,14 @@ const ContactSchema = new mongoose.Schema({
     }
 });
 
+ContactSchema.plugin(Paginate);
 const Contact = module.exports = mongoose.model('Contact', ContactSchema);
+
+// Get the contact full name
+ContactSchema.virtual('fullname').get(function() {
+    console.log('fullname : ',this.firstname + ' ' + this.lastname);
+    return this.firstname + ' ' + this.lastname;
+});
 
 /* module.exports.getUserByUsername = function(username, cb) {
 	Users.findOne({loginid: username}, cb);

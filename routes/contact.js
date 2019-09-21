@@ -5,58 +5,37 @@ const auth      = require('../auth');
 
 var router      = express.Router();
 
-/**
- * @swagger
- * /contact:
- *   get:
- *     tags:
- *       - Contact
- *     description: Returns all contacts
- *     security:
- *       - bearerAuth: []
- *     produces:
- *       - application/json
- *     responses:
- *       200:
- *         description: An array of contacts
- */
-// GET CONTACTS (Only active) WITH filter & pagination
+
+// GET CONTACTS (default active) WITH filter, sorting & pagination
 router.get('/', auth, (req, resp) => {
-    console.log('search params : ', req.params);
-    Contact.where({ is_active: true }).exec().then(contacts => {
-        return resp.status(200).json(contacts);
-    }).catch(error => {
-        console.log('error : ', error);
+
+    let filter = {};
+    filter.is_active = req.query.is_active || true;
+    if (req.query.firstname) filter.firstname = new RegExp('.*' + req.query.firstname + '.*', 'i');
+    if (req.query.lastname) filter.lastname = new RegExp('.*' + req.query.lastname + '.*', 'i');
+    if (req.query.gender) filter.gender = new RegExp('^' + req.query.gender + '$', 'i');
+    if (req.query.mobile) filter.mobile = new RegExp('.*' + req.query.mobile + '.*', 'i');
+    if (req.query.phone) filter.phone = new RegExp('.*' + req.query.phone + '.*', 'i');
+    if (req.query.email) filter.email = new RegExp('.*' + req.query.email + '.*', 'i');
+    if (req.query.company) filter.company = new RegExp('.*' + req.query.company + '.*', 'i');
+    if (req.query.designation) filter.designation = new RegExp('.*' + req.query.designation + '.*', 'i');
+    if (req.query.tag) filter.tag = new RegExp('^' + req.query.tag + '$', 'i');
+
+    Contact.paginate(filter, { sort: { _id: req.query.sort_order }, page: parseInt(req.query.page), limit: parseInt(req.query.limit) }, (error, result) => {
         // 500 : Internal Sever Error. The request was not completed. The server met an unexpected condition.
-        return resp.status(500).json({
+        if (error) return resp.status(500).json({
             error: error
         });
+
+        return resp.status(200).json(result);
     });
 });
 
 
-/**
- * @swagger
- * /contact/{id}:
- *   get:
- *     tags:
- *       - Contact
- *     description: Returns a single contact
- *     produces:
- *       - application/json
- *     parameters:
- *       - name: id
- *         description: Contact's id
- *         in: path
- *         required: true
- *         type: string
- *     responses:
- *       200:
- *         description: A single contact
- */
+
 
 // GET SINGLE CONTACT BY ID
-router.get('/:id', auth, (req, resp, next) => {
+router.get('/:id', auth, (req, resp) => {
     Contact.findById(req.params.id).exec().then(contact => {
         return resp.status(200).json(contact);
     }).catch(error => {
@@ -69,28 +48,9 @@ router.get('/:id', auth, (req, resp, next) => {
 });
 
 
-/**
- * @swagger
- * /contact:
- *   post:
- *     tags:
- *       - Contact
- *     description: Creates a new contact
- *     produces:
- *       - application/json
- *     parameters:
- *       - name: contact
- *         description: Contact object
- *         in: body
- *         required: true
- *         schema:
- *           $ref: '#/definitions/Contact'
- *     responses:
- *       201:
- *         description: Contact created successfully
- */
+
 // SAVE CONTACT
-router.post('/', auth, (req, resp, next) => {
+router.post('/', auth, (req, resp) => {
     // First check if the conact with firstname, lastname and mobile number already exists.
     Contact.findOne({ firstname: req.body.firstname, lastname: req.body.lastname, mobile: req.body.mobile, is_active: true })
         .exec()
@@ -99,39 +59,29 @@ router.post('/', auth, (req, resp, next) => {
             if (contact) {
                 // 409 : Conflict. The request could not be completed because of a conflict.
                 return resp.status(409).json({
-                    message: "The contact with name " + req.body.firstname + " " + req.body.lastname + " and mobile number " + req.body.mobile + " already exist."
+                    message: 'The contact with name ' + req.body.firstname + ' ' + req.body.lastname + ' and mobile number ' + req.body.mobile + ' already exist.'
                 });
             } else {
                 // Since the user doesn't exist, then save the detail
                 console.log(req.body);
-                const contact = new Contact({
-                    _id: new mongoose.Types.ObjectId(),
-                    firstname: req.body.firstname,
-                    lastname: req.body.lastname,
-                    gender: req.body.gender,
-                    email: req.body.email,
-                    mobile: req.body.mobile,
-                    created_by: req.body.created_by,
-                    updated_by: req.body.updated_by,
-                    created_date: Date.now(),
-                    updated_date: Date.now()
-                });
+                let contact = new Contact(req.body);
+                contact._id = new mongoose.Types.ObjectId(),
+                contact.created_date = Date.now(),
+                contact.updated_date = Date.now();
 
-                contact.save()
-                    .then(result => {
-                        console.log(result);
-                        return resp.status(201).json({
-                            message: "Contact created successfully",
-                            result: result
-                        });
-                    })
-                    .catch(error => {
-                        console.log('error : ', error);
-                        // 500 : Internal Sever Error. The request was not completed. The server met an unexpected condition.
-                        return resp.status(500).json({
-                            error: error
-                        });
+                contact.save().then(result => {
+                    console.log(result);
+                    return resp.status(201).json({
+                        message: 'Contact created successfully',
+                        result: result
                     });
+                }).catch(error => {
+                    console.log('error : ', error);
+                    // 500 : Internal Sever Error. The request was not completed. The server met an unexpected condition.
+                    return resp.status(500).json({
+                        error: error
+                    });
+                });
             }
         }).catch(error => {
             console.log('error : ', error);
@@ -142,27 +92,10 @@ router.post('/', auth, (req, resp, next) => {
         });
 });
 
-/**
-* @swagger
-* /contact/{id}:
-*   put:
-*     tags:
-*       - Contact
-*     description: Updates a single contact
-*     produces: application/json
-*     parameters:
-*       name: contact
-*       in: body
-*       description: Fields for the Contact resource
-*       schema:
-*         type: array
-*         $ref: '#/definitions/Contact'
-*     responses:
-*       200:
-*         description: Successfully updated
-*/
+
+
 // UPDATE CONTACT
-router.put('/:id', auth, (req, resp, next) => {
+router.put('/:id', auth, (req, resp) => {
     Contact.findByIdAndUpdate(req.params.id, req.body).exec().then(contact => {
         return resp.status(200).json(contact);
     }).catch(error => {
@@ -174,27 +107,9 @@ router.put('/:id', auth, (req, resp, next) => {
 });
 
 
-/**
- * @swagger
- * /contact/{id}:
- *   delete:
- *     tags:
- *       - Contact
- *     description: Deletes a single contact
- *     produces:
- *       - application/json
- *     parameters:
- *       - name: id
- *         description: Contact's id
- *         in: path
- *         required: true
- *         type: integer
- *     responses:
- *       200:
- *         description: Successfully deleted
- */
+
 // DELETE CONTACT (Hard delete. This will delete the entire contact detail. Only application admin should be allowed to perform this action )
-router.delete('/:id', auth, (req, resp, next) => {
+router.delete('/:id', auth, (req, resp) => {
     Contact.findByIdAndRemove(req.params.id).exec().then(contact => {
         return resp.status(200).json(contact);
     }).catch(error => {

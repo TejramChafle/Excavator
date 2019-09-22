@@ -60,6 +60,18 @@ app.use(express.static(path.join(__dirname, 'dist/fuse')));
 
 
 // SET the frontend/angular routes
+
+// authentication
+app.use('/auth/login', express.static(path.join(__dirname, 'dist/fuse')));
+app.use('/auth/forgot-password', express.static(path.join(__dirname, 'dist/fuse')));
+app.use('/auth/lock', express.static(path.join(__dirname, 'dist/fuse')));
+app.use('/auth/mail-confirm', express.static(path.join(__dirname, 'dist/fuse')));
+app.use('/auth/register', express.static(path.join(__dirname, 'dist/fuse')));
+app.use('/auth/reset-password', express.static(path.join(__dirname, 'dist/fuse')));
+
+// confiuration
+app.use('/config/contacts', express.static(path.join(__dirname, 'dist/fuse')));
+
 app.use('/sample', express.static(path.join(__dirname, 'dist/fuse')));
 app.use('/swagger', express.static(path.join(__dirname, 'swagger')));
 

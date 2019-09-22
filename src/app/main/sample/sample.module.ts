@@ -1,3 +1,4 @@
+import { AuthGuard } from './../../guard/auth.guard';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -9,7 +10,8 @@ import { SampleComponent } from './sample.component';
 const routes = [
     {
         path     : 'sample',
-        component: SampleComponent
+        component: SampleComponent,
+        CanActivate: [AuthGuard]
     }
 ];
 

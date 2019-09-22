@@ -81,12 +81,28 @@ $typography: mat-typography-config(
 @import "src/app/layout/components/chat-panel/chat-panel.theme";
 @import "src/app/layout/components/toolbar/toolbar.theme";
 
+
+@import "main/authentication/login/login.theme";
+@import "main/authentication/register/register.theme";
+@import "main/authentication/reset-password/reset-password.theme";
+@import "main/authentication/forgot-password/forgot-password.theme";
+@import "main/authentication/lock/lock.theme";
+@import "main/authentication/mail-confirm/mail-confirm.theme";
+
 // Define a mixin for easier access
 @mixin components-theme($theme) {
 
     // Layout components
     @include chat-panel-theme($theme);
     @include toolbar-theme($theme);
+
+    // Authentication
+    @include login-theme($theme);
+    @include register-theme($theme);
+    @include reset-password-theme($theme);
+    @include forgot-password-theme($theme);
+    @include lock-theme($theme);
+    @include mail-confirm-theme($theme);
 }
 
 // -----------------------------------------------------------------------------------------------------

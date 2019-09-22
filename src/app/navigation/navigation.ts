@@ -20,6 +20,13 @@ export const navigation: FuseNavigation[] = [
                     bg       : '#F44336',
                     fg       : '#FFFFFF'
                 }
+            },
+            {
+                id       : 'contacts',
+                title    : 'Contacts',
+                type     : 'item',
+                icon     : 'contacts',
+                url      : '/contacts'
             }
         ]
     }

@@ -7,6 +7,18 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FuseDirectivesModule } from '@fuse/directives/directives';
 import { FusePipesModule } from '@fuse/pipes/pipes.module';
 
+
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRippleModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTableModule } from '@angular/material/table';
+import { MatToolbarModule } from '@angular/material/toolbar';
+
 @NgModule({
     imports  : [
         CommonModule,
@@ -26,7 +38,18 @@ import { FusePipesModule } from '@fuse/pipes/pipes.module';
         FlexLayoutModule,
 
         FuseDirectivesModule,
-        FusePipesModule
+        FusePipesModule,
+
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
     ]
 })
 export class FuseSharedModule

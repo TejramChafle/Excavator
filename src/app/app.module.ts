@@ -11,18 +11,24 @@ import 'hammerjs';
 
 import { FuseModule } from '@fuse/fuse.module';
 import { FuseSharedModule } from '@fuse/shared.module';
-import { FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule } from '@fuse/components';
+import { FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule, FuseAlertDialogModule } from '@fuse/components';
 
 import { fuseConfig } from 'app/fuse-config';
 
 import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
 import { SampleModule } from 'app/main/sample/sample.module';
+import { AuthModule } from './main/authentication/auth.module';
+
+import { AppService } from './app.service';
+import { AuthGuard } from './guard/auth.guard';
+import { FuseAlertDialogComponent } from '@fuse/components/alert-dialog/alert-dialog.component';
 
 const appRoutes: Routes = [
     {
-        path      : '**',
-        redirectTo: 'sample'
+        path: '**',
+        redirectTo: 'sample',
+        canActivate: [ AuthGuard ]
     }
 ];
 
@@ -30,7 +36,7 @@ const appRoutes: Routes = [
     declarations: [
         AppComponent
     ],
-    imports     : [
+    imports: [
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
@@ -51,15 +57,23 @@ const appRoutes: Routes = [
         FuseSharedModule,
         FuseSidebarModule,
         FuseThemeOptionsModule,
+        FuseAlertDialogModule,
 
         // App modules
         LayoutModule,
-        SampleModule
+        SampleModule,
+        AuthModule
     ],
-    bootstrap   : [
+    entryComponents: [
+        FuseAlertDialogComponent
+    ],
+    providers: [
+        AppService
+    ],
+    bootstrap: [
         AppComponent
     ]
 })
-export class AppModule
-{
+
+export class AppModule {
 }

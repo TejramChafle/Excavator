@@ -8,11 +8,13 @@ import { MatInputModule } from '@angular/material/input';
 import { FuseSharedModule } from '@fuse/shared.module';
 
 import { ResetPasswordComponent } from 'app/main/authentication/reset-password/reset-password.component';
+import { ConfGuard } from 'app/guard/conf.guard';
 
 const routes = [
     {
-        path     : 'auth/reset-password',
-        component: ResetPasswordComponent
+        path: 'auth/reset-password',
+        component: ResetPasswordComponent,
+        canActivate: [ConfGuard]
     }
 ];
 
@@ -20,7 +22,7 @@ const routes = [
     declarations: [
         ResetPasswordComponent
     ],
-    imports     : [
+    imports: [
         RouterModule.forChild(routes),
 
         MatButtonModule,
@@ -31,6 +33,6 @@ const routes = [
         FuseSharedModule
     ]
 })
-export class ResetPasswordModule
-{
+
+export class ResetPasswordModule {
 }

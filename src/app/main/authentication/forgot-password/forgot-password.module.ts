@@ -8,11 +8,13 @@ import { MatInputModule } from '@angular/material/input';
 import { FuseSharedModule } from '@fuse/shared.module';
 
 import { ForgotPasswordComponent } from 'app/main/authentication/forgot-password/forgot-password.component';
+import { ConfGuard } from 'app/guard/conf.guard';
 
 const routes = [
     {
         path     : 'auth/forgot-password',
-        component: ForgotPasswordComponent
+        component: ForgotPasswordComponent,
+        canActivate: [ ConfGuard ]
     }
 ];
 

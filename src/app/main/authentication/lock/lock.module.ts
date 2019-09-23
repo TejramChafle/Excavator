@@ -6,7 +6,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 
 import { FuseSharedModule } from '@fuse/shared.module';
-
 import { LockComponent } from 'app/main/authentication/lock/lock.component';
 
 const routes = [

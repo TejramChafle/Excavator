@@ -23,6 +23,7 @@ import { AuthModule } from './main/authentication/auth.module';
 import { AppService } from './app.service';
 import { AuthGuard } from './guard/auth.guard';
 import { FuseAlertDialogComponent } from '@fuse/components/alert-dialog/alert-dialog.component';
+import { ConfigModule } from './main/configuration/config.module';
 
 const appRoutes: Routes = [
     {
@@ -62,7 +63,8 @@ const appRoutes: Routes = [
         // App modules
         LayoutModule,
         SampleModule,
-        AuthModule
+        AuthModule,
+        ConfigModule
     ],
     entryComponents: [
         FuseAlertDialogComponent

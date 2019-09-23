@@ -6,12 +6,12 @@ import { locale as english } from './i18n/en';
 import { locale as turkish } from './i18n/tr';
 
 @Component({
-    selector   : 'sample',
+    selector: 'sample',
     templateUrl: './sample.component.html',
-    styleUrls  : ['./sample.component.scss']
+    styleUrls: ['./sample.component.scss']
 })
-export class SampleComponent
-{
+
+export class SampleComponent {
     /**
      * Constructor
      *
@@ -19,8 +19,7 @@ export class SampleComponent
      */
     constructor(
         private _fuseTranslationLoaderService: FuseTranslationLoaderService
-    )
-    {
+    ) {
         this._fuseTranslationLoaderService.loadTranslations(english, turkish);
     }
 }

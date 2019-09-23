@@ -9,11 +9,13 @@ import { MatInputModule } from '@angular/material/input';
 import { FuseSharedModule } from '@fuse/shared.module';
 
 import { LoginComponent } from 'app/main/authentication/login/login.component';
+import { ConfGuard } from 'app/guard/conf.guard';
 
 const routes = [
     {
         path: 'auth/login',
-        component: LoginComponent
+        component: LoginComponent,
+        canActivate: [ ConfGuard ]
     }
 ];
 

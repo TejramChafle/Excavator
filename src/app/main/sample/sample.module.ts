@@ -2,16 +2,14 @@ import { AuthGuard } from './../../guard/auth.guard';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-
 import { FuseSharedModule } from '@fuse/shared.module';
-
 import { SampleComponent } from './sample.component';
 
 const routes = [
     {
-        path     : 'sample',
+        path: 'sample',
         component: SampleComponent,
-        CanActivate: [AuthGuard]
+        canActivate: [AuthGuard]
     }
 ];
 
@@ -19,18 +17,17 @@ const routes = [
     declarations: [
         SampleComponent
     ],
-    imports     : [
+    imports: [
         RouterModule.forChild(routes),
 
         TranslateModule,
 
         FuseSharedModule
     ],
-    exports     : [
+    exports: [
         SampleComponent
     ]
 })
 
-export class SampleModule
-{
+export class SampleModule {
 }

@@ -5,11 +5,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { FuseSharedModule } from '@fuse/shared.module';
 
 import { MailConfirmComponent } from 'app/main/authentication/mail-confirm/mail-confirm.component';
+import { ConfGuard } from 'app/guard/conf.guard';
 
 const routes = [
     {
         path     : 'auth/mail-confirm',
-        component: MailConfirmComponent
+        component: MailConfirmComponent,
+        canActivate: [ ConfGuard ]
     }
 ];
 

@@ -26,7 +26,7 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
     contacts: any;
     user: any;
     dataSource: FilesDataSource | null;
-    displayedColumns = ['checkbox', 'avatar', 'name', 'email', 'phone', 'jobTitle', 'buttons'];
+    displayedColumns = ['checkbox', 'avatar', 'firstname', 'email', 'mobile', 'phone', 'designation', 'company', 'buttons'];
     selectedContacts: any[];
     checkboxes: {};
     dialogRef: any;
@@ -66,7 +66,7 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
 
                 this.checkboxes = {};
                 contacts.map(contact => {
-                    this.checkboxes[contact.id] = false;
+                    this.checkboxes[contact._id] = false;
                 });
             });
 

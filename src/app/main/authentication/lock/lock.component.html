@@ -21,17 +21,17 @@
 
             </div>
 
-            <form name="lockForm" [formGroup]="lockForm" novalidate>
+            <form name="lockForm" [formGroup]="lockForm" novalidate (ngSubmit)=unlock(lockForm.value)>
 
                 <mat-form-field appearance="outline">
                     <mat-label>Username</mat-label>
-                    <input matInput formControlName="username">
+                    <input matInput formControlName="username" disabled>
                     <mat-icon matSuffix class="disabled-text">account_circle</mat-icon>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
                     <mat-label>Password</mat-label>
-                    <input matInput formControlName="password">
+                    <input matInput type="password" formControlName="password">
                     <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
                     <mat-error>
                         Password is required

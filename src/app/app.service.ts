@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FuseAlertDialogComponent } from '@fuse/components/alert-dialog/alert-dialog.component';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
@@ -10,10 +11,20 @@ import { Router } from '@angular/router';
 export class AppService {
     user: any;
     alertDialogRef: MatDialogRef<FuseAlertDialogComponent>;
+
+    httpOptions = {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
+
     constructor(public _matDialog: MatDialog, private _router: Router) {
         // Set user information for the logged in user at the application level if the user is logged in
         if (localStorage.getItem('auth')) {
             this.user = JSON.parse(localStorage.getItem('auth')).user;
+            this.user.role = JSON.parse(localStorage.getItem('auth')).auth.role;
+            this.user.username = JSON.parse(localStorage.getItem('auth')).auth.username;
+
+            // Append/add bearer token to the header
+            this.httpOptions.headers.append('Authorization', 'Bearer ' + JSON.parse(localStorage.getItem('auth')).token);
         }
     }
 

@@ -7,7 +7,7 @@ const routes = [
     {
         path: 'contacts',
         loadChildren: './contacts/contacts.module#ContactsModule',
-        canActivate: [ AuthGuard ]
+        // canActivate: [ AuthGuard ]
     }
 ];
 

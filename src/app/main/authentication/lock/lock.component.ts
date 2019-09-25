@@ -4,6 +4,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
 import { AppService } from 'app/app.service';
+import { LoginComponent } from '../login/login.component';
+import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
     selector: 'lock',
@@ -15,7 +18,6 @@ import { AppService } from 'app/app.service';
 
 export class LockComponent implements OnInit {
     lockForm: FormGroup;
-
     /**
      * Constructor
      *
@@ -25,7 +27,9 @@ export class LockComponent implements OnInit {
     constructor(
         private _fuseConfigService: FuseConfigService,
         private _formBuilder: FormBuilder,
-        public _appService: AppService
+        public _appService: AppService,
+        public _router: Router,
+        public _authService: AuthService
     ) {
         // Configure the layout
         this._fuseConfigService.config = {
@@ -55,13 +59,21 @@ export class LockComponent implements OnInit {
      */
     ngOnInit(): void {
         this.lockForm = this._formBuilder.group({
-            username: [
+            // The below line of code doesn't work with the disable. Once the field is disabled, form field ignores username
+            /* username: [
                 {
                     value: this._appService.user.username,
                     disabled: true
                 }, Validators.required
-            ],
+            ], */
+            username: [this._appService.user.username, Validators.required],
             password: ['', Validators.required]
         });
+    }
+
+    // Unlock the application for the provided username & password form data
+    unlock(form): any {
+        const loginComp = new LoginComponent(this._fuseConfigService, this._formBuilder, this._authService, this._router);
+        loginComp.onSubmit(form);
     }
 }

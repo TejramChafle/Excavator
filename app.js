@@ -80,17 +80,17 @@ app.use('/swagger', express.static(path.join(__dirname, 'swagger')));
 
 
 // Set the route for the incoming request
-app.use('/auth', require('./routes/auth'));
-app.use('/bill', require('./routes/bill'));
-app.use('/client', require('./routes/client'));
-app.use('/contact', require('./routes/contact'));
-app.use('/contractor', require('./routes/contractor'));
-app.use('/fuel-resource', require('./routes/fuel-resource'));
-app.use('/service', require('./routes/service'));
-app.use('/tag', require('./routes/tag'));
-app.use('/user', require('./routes/user'));
-app.use('/vehicle', require('./routes/vehicle'));
-app.use('/work', require('./routes/work'));
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/bill', require('./routes/bill'));
+app.use('/api/client', require('./routes/client'));
+app.use('/api/contact', require('./routes/contact'));
+app.use('/api/contractor', require('./routes/contractor'));
+app.use('/api/fuel-resource', require('./routes/fuel-resource'));
+app.use('/api/service', require('./routes/service'));
+app.use('/api/tag', require('./routes/tag'));
+app.use('/api/user', require('./routes/user'));
+app.use('/api/vehicle', require('./routes/vehicle'));
+app.use('/api/work', require('./routes/work'));
 
 
 

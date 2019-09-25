@@ -45,9 +45,9 @@ router.post("/login", async (req, resp) => {
 
             // GET the contact detail
             Contact.findById(user.contact_id).exec().then(contact => {
-                contact.username = user.username, contact.role = user.role;
                 resp.status(201).json({
                     user: contact,
+                    auth: user,
                     token: token
                 });
             });

@@ -55,18 +55,20 @@ export class ContactsContactFormDialogComponent {
      */
     createContactForm(): FormGroup {
         return this._formBuilder.group({
-            id: [this.contact.id],
-            name: [this.contact.name],
-            lastName: [this.contact.lastName],
-            avatar: [this.contact.avatar],
-            nickname: [this.contact.nickname],
-            company: [this.contact.company],
-            jobTitle: [this.contact.jobTitle],
-            email: [this.contact.email],
-            phone: [this.contact.phone],
-            address: [this.contact.address],
-            birthday: [this.contact.birthday],
-            notes: [this.contact.notes]
+            _id:        [this.contact._id],
+            firstname:  [this.contact.firstname],
+            lastname:   [this.contact.lastname],
+            avatar:     [this.contact.avatar],
+            gender:     [this.contact.gender],
+            email:      [this.contact.email],
+            mobile:     [this.contact.mobile],
+            phone:      [this.contact.phone],
+            company:    [this.contact.company],
+            designation: [this.contact.designation],
+            address:    [this.contact.address],
+            birthday:   [this.contact.birthday],
+            description: [this.contact.description],
+            tag: [this.contact.tag]
         });
     }
 }

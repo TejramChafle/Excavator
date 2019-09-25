@@ -4,7 +4,7 @@
     <ng-container matColumnDef="checkbox">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let contact">
-            <mat-checkbox [(ngModel)]="checkboxes[contact.id]" (ngModelChange)="onSelectedChange(contact.id)"
+            <mat-checkbox [(ngModel)]="checkboxes[contact._id]" (ngModelChange)="onSelectedChange(contact._id)"
                           (click)="$event.stopPropagation()">
             </mat-checkbox>
         </mat-cell>
@@ -14,16 +14,16 @@
     <ng-container matColumnDef="avatar">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let contact">
-            <img class="avatar" *ngIf="contact.avatar" [alt]="contact.name"
+            <img class="avatar" *ngIf="contact.avatar" [alt]="contact.firstname"
                  [src]="contact.avatar"/>
         </mat-cell>
     </ng-container>
 
     <!-- Name Column -->
-    <ng-container matColumnDef="name">
+    <ng-container matColumnDef="firstname">
         <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
         <mat-cell *matCellDef="let contact">
-            <p class="text-truncate font-weight-600">{{contact.name}} {{contact.lastName}}</p>
+            <p class="text-truncate font-weight-600">{{contact.firstname}} {{contact.lastname}}</p>
         </mat-cell>
     </ng-container>
 
@@ -33,6 +33,16 @@
         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-sm>
             <p class="email text-truncate">
                 {{contact.email}}
+            </p>
+        </mat-cell>
+    </ng-container>
+
+    <!-- Mobile Column -->
+    <ng-container matColumnDef="mobile">
+        <mat-header-cell *matHeaderCellDef fxShow.gt-md>Mobile</mat-header-cell>
+        <mat-cell *matCellDef="let contact" fxShow.gt-md>
+            <p class="phone text-truncate">
+                {{contact.mobile}}
             </p>
         </mat-cell>
     </ng-container>
@@ -48,11 +58,11 @@
     </ng-container>
 
     <!-- Job Title Column -->
-    <ng-container matColumnDef="jobTitle">
-        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-lg>Job title</mat-header-cell>
+    <ng-container matColumnDef="designation">
+        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-lg>Designation</mat-header-cell>
         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-lg>
             <p class="job-title text-truncate">
-                {{contact.jobTitle}}
+                {{contact.designation}}
             </p>
         </mat-cell>
     </ng-container>
@@ -72,9 +82,9 @@
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let contact">
             <div fxFlex="row" fxLayoutAlign="end center">
-                <button mat-icon-button (click)="$event.stopPropagation();toggleStar(contact.id)" aria-label="Toggle star">
-                    <mat-icon class="amber-fg" *ngIf="user.starred.includes(contact.id)">star</mat-icon>
-                    <mat-icon class="secondary-text" *ngIf="!user.starred.includes(contact.id)">star_border</mat-icon>
+                <button mat-icon-button (click)="$event.stopPropagation();toggleStar(contact._id)" aria-label="Toggle star">
+                    <mat-icon class="amber-fg" *ngIf="user.starred.includes(contact._id)">star</mat-icon>
+                    <mat-icon class="secondary-text" *ngIf="!user.starred.includes(contact._id)">star_border</mat-icon>
                 </button>
 
                 <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
@@ -97,7 +107,7 @@
     <mat-row *matRowDef="let contact; columns: displayedColumns;"
              class="contact"
              (click)="editContact(contact)"
-             [ngClass]="{'accent-50':checkboxes[contact.id]}"
+             [ngClass]="{'accent-50':checkboxes[contact._id]}"
              matRipple
              [@animate]="{value:'*',params:{y:'100%'}}">
     </mat-row>

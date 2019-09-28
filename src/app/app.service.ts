@@ -11,33 +11,40 @@ import { HttpHeaders } from '@angular/common/http';
 export class AppService {
     user: any;
     alertDialogRef: MatDialogRef<FuseAlertDialogComponent>;
-
-    httpOptions = {
-        headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    };
+    httpOptions: any;
 
     constructor(public _matDialog: MatDialog, private _router: Router) {
+        this.initApplication();
+    }
+
+    // Initialize the application user & http header options at application level
+    initApplication(): void {
         // Set user information for the logged in user at the application level if the user is logged in
         if (localStorage.getItem('auth')) {
             this.user = JSON.parse(localStorage.getItem('auth')).user;
             this.user.role = JSON.parse(localStorage.getItem('auth')).auth.role;
             this.user.username = JSON.parse(localStorage.getItem('auth')).auth.username;
 
-            // Append/add bearer token to the header
-            this.httpOptions.headers.append('Authorization', 'Bearer ' + JSON.parse(localStorage.getItem('auth')).token);
+            this.httpOptions = {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('auth')).token
+                })
+            };
         }
     }
 
 
 
     // Handle errors/http errors from http services throughout the application
-    handleError(errorResponse): void {
-        console.log('errorResponse', errorResponse);
+    handleError(response): void {
+        console.log('response', response);
+
         // If the user token is expired, redirect user to lock page to enter the password
-        if (errorResponse.status === 401 && errorResponse.error.message === 'jwt expired') {
+        if (response.status === 401 && response.error.message === 'jwt expired') {
             this._router.navigate(['auth/lock']);
         } else {
-            this.handleMessage(errorResponse.error.message || errorResponse.message, errorResponse.statusText);
+            this.handleMessage(response.error.message || response.message, response.statusText);
         }
     }
 

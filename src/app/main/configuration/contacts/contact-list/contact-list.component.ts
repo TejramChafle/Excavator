@@ -26,7 +26,7 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
     contacts: any;
     user: any;
     dataSource: FilesDataSource | null;
-    displayedColumns = ['checkbox', 'avatar', 'firstname', 'email', 'mobile', 'phone', 'designation', 'company', 'buttons'];
+    displayedColumns = ['firstname', 'email', 'mobile', 'phone', 'designation', 'company', 'buttons'];
     selectedContacts: any[];
     checkboxes: {};
     dialogRef: any;
@@ -83,11 +83,11 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
                 this.selectedContacts = selectedContacts;
             });
 
-        this._contactsService.onUserDataChanged
+        /* this._contactsService.onUserDataChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(user => {
                 this.user = user;
-            });
+            }); */
 
         this._contactsService.onFilterChanged
             .pipe(takeUntil(this._unsubscribeAll))
@@ -128,26 +128,26 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
                 if (!response) {
                     return;
                 }
-                const actionType: string = response[0];
-                const formData: FormGroup = response[1];
-                switch (actionType) {
-                    /**
-                     * Save
-                     */
-                    case 'save':
+                // const actionType: string = response[0];
+                // const formData: FormGroup = response[1];
+                // switch (actionType) {
+                //     /**
+                //      * Save
+                //      */
+                //     case 'save':
 
-                        this._contactsService.updateContact(formData.getRawValue());
+                //         this._contactsService.updateContact(formData.getRawValue());
 
-                        break;
-                    /**
-                     * Delete
-                     */
-                    case 'delete':
+                //         break;
+                //     /**
+                //      * Delete
+                //      */
+                //     case 'delete':
 
-                        this.deleteContact(contact);
+                //         this.deleteContact(contact);
 
-                        break;
-                }
+                //         break;
+                // }
             });
     }
 

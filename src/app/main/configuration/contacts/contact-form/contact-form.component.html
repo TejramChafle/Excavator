@@ -7,11 +7,11 @@
             </button>
         </mat-toolbar-row>
 
-        <mat-toolbar-row class="toolbar-bottom py-16" fxLayout="column" fxLayoutAlign="center center">
+        <!-- <mat-toolbar-row class="toolbar-bottom py-16" fxLayout="column" fxLayoutAlign="center center">
             <img [src]="contact.avatar" class="avatar contact-avatar huge m-0"
                  [alt]="contact.firstname"/>
             <div class="contact-name mt-8">{{contact.firstname}} {{contact.lastname}}</div>
-        </mat-toolbar-row>
+        </mat-toolbar-row> -->
     </mat-toolbar>
 
     <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
@@ -115,19 +115,19 @@
 
     <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
 
-        <button *ngIf="action === 'edit'"
+        <!-- <button *ngIf="action === 'edit'"
                 mat-button
                 class="mr-8"
                 (click)="matDialogRef.close(['delete',contactForm])"
                 aria-label="Delete"
                 matTooltip="Delete">
             DELETE
-        </button>
+        </button> -->
 
         <button *ngIf="action !== 'edit'"
                 mat-button
                 class="save-button"
-                (click)="matDialogRef.close(contactForm)"
+                (click)="onSubmit(contactForm.value)"
                 [disabled]="contactForm.invalid"
                 aria-label="SAVE">
             ADD
@@ -136,7 +136,7 @@
         <button *ngIf="action === 'edit'"
                 mat-button
                 class="save-button"
-                (click)="matDialogRef.close(['save',contactForm])"
+                (click)="onSubmit(contactForm.value)"
                 [disabled]="contactForm.invalid"
                 aria-label="SAVE">
             SAVE

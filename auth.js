@@ -9,8 +9,6 @@ module.exports = (req, resp, next) => {
         const decode = jwt.verify(token, process.env.JWT_ACCESS_KEY);
         next();
     } catch (error) {
-        resp.status(401).json({
-            error: error
-        });
+        resp.status(401).json(error);
     }
 };

@@ -1,3 +1,4 @@
+import { catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
@@ -53,9 +54,7 @@ export class ContactsService implements Resolve<any> {
      * @returns {Observable<any> | Promise<any> | any}
      */
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
-        console.log('contact resolve');
         return new Promise((resolve, reject) => {
-            console.log('contact resolve promise');
             Promise.all([
                 this.getContacts(),
                 // this.getUserData()
@@ -86,12 +85,10 @@ export class ContactsService implements Resolve<any> {
      * @returns {Promise<any>}
      */
     getContacts(): Promise<any> {
-        console.log('get contacts call');
         return new Promise((resolve, reject) => {
-            this._httpClient.get(apiBaseUrl + 'contact/', this._appService.httpOptions)
+            this._httpClient.get(apiBaseUrl + 'contact/?page=1&limit=10', this._appService.httpOptions)
                 .subscribe((response: any) => {
-                    console.log('get contacts response : ', response);
-                    this.contacts = response;
+                    this.contacts = response.docs;
 
                     if (this.filterBy === 'starred') {
                         this.contacts = this.contacts.filter(_contact => {
@@ -115,9 +112,11 @@ export class ContactsService implements Resolve<any> {
 
                     this.onContactsChanged.next(this.contacts);
                     resolve(this.contacts);
-                }, reject);
-        }
-        );
+                }, (error) => {
+                    this._appService.handleError(error);
+                    return reject;
+                });
+        });
     }
 
     /**
@@ -199,6 +198,25 @@ export class ContactsService implements Resolve<any> {
     }
 
     /**
+     * Create a new contact
+     *
+     * @param contact
+     * @returns {Promise<any>}
+     */
+    createContact(contact): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(apiBaseUrl + 'contact/', { ...contact }, this._appService.httpOptions)
+                .subscribe(response => {
+                    this.getContacts();
+                    resolve(response);
+                }, (error) => {
+                    this._appService.handleError(error);
+                    return reject;
+                });
+        });
+    }
+
+    /**
      * Update contact
      *
      * @param contact
@@ -206,11 +224,13 @@ export class ContactsService implements Resolve<any> {
      */
     updateContact(contact): Promise<any> {
         return new Promise((resolve, reject) => {
-
-            this._httpClient.post('api/contacts-contacts/' + contact._id, { ...contact })
+            this._httpClient.put(apiBaseUrl + 'contact/' + contact._id, { ...contact }, this._appService.httpOptions)
                 .subscribe(response => {
                     this.getContacts();
                     resolve(response);
+                }, (error) => {
+                    this._appService.handleError(error);
+                    return reject;
                 });
         });
     }

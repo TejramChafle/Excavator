@@ -39,11 +39,11 @@ export class ContactsMainSidebarComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.filterBy = this._contactsService.filterBy || 'all';
 
-        this._contactsService.onUserDataChanged
+        /* this._contactsService.onUserDataChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(user => {
                 this.user = user;
-            });
+            }); */
     }
 
     /**

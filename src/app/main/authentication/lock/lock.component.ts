@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
 import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
@@ -66,14 +66,16 @@ export class LockComponent implements OnInit {
                     disabled: true
                 }, Validators.required
             ], */
-            username: [this._appService.user.username, Validators.required],
-            password: ['', Validators.required]
+            username: new FormControl({ value: this._appService.user.username, disabled: true }, Validators.required),
+            password: new FormControl('', Validators.required)
+            // username: [this._appService.user.username, Validators.required],
+            // password: ['', Validators.required]
         });
     }
 
     // Unlock the application for the provided username & password form data
     unlock(form): any {
-        const loginComp = new LoginComponent(this._fuseConfigService, this._formBuilder, this._authService, this._router);
+        const loginComp = new LoginComponent(this._fuseConfigService, this._formBuilder, this._authService, this._appService, this._router);
         loginComp.onSubmit(form);
     }
 }

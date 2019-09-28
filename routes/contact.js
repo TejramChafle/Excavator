@@ -78,17 +78,13 @@ router.post('/', auth, (req, resp) => {
                 }).catch(error => {
                     console.log('error : ', error);
                     // 500 : Internal Sever Error. The request was not completed. The server met an unexpected condition.
-                    return resp.status(500).json({
-                        error: error
-                    });
+                    return resp.status(500).json(error);
                 });
             }
         }).catch(error => {
             console.log('error : ', error);
             // 500 : Internal Sever Error. The request was not completed. The server met an unexpected condition.
-            return resp.status(500).json({
-                error: error
-            });
+            return resp.status(500).json(error);
         });
 });
 
@@ -100,9 +96,7 @@ router.put('/:id', auth, (req, resp) => {
         return resp.status(200).json(contact);
     }).catch(error => {
         // 500 : Internal Sever Error. The request was not completed. The server met an unexpected condition.
-        return resp.status(500).json({
-            error: error
-        });
+        return resp.status(500).json(error);
     });
 });
 

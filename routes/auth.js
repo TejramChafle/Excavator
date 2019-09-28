@@ -35,7 +35,7 @@ router.post("/login", async (req, resp) => {
         if (!await user.comparePassword(req.body.password)) {
             // 401: Unauthorized. Authentication failed to due mismatch in credentials.
             resp.status(401).json({
-                message: 'Authentication failed!'
+            message: 'Authentication failed. Your username or password is incorrect!'
             });
         } else {
             // GENERATE jwt token with the expiry time
@@ -53,10 +53,8 @@ router.post("/login", async (req, resp) => {
             });
         }
     }).catch(error => {
-        console.log('error: ', error);
         resp.status(401).json({
-            error: error,
-            message: 'Authentication failed!'
+            message: 'Authentication failed. Your username or password is incorrect!'
         });
     });
 });

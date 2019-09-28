@@ -6,6 +6,7 @@ import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
 
 import { AuthService } from '../auth.service';
+import { AppService } from './../../../app.service';
 
 @Component({
     selector: 'login',
@@ -28,6 +29,7 @@ export class LoginComponent implements OnInit {
         private _fuseConfigService: FuseConfigService,
         private _formBuilder: FormBuilder,
         private _authService: AuthService,
+        private _appService: AppService,
         private _router: Router
     ) {
         // Configure the layout
@@ -77,7 +79,14 @@ export class LoginComponent implements OnInit {
         console.log('login form : ', form);
         this._authService.login(form).subscribe((response) => {
             console.log('response', response);
+
+            // Save the login information in local storage
             localStorage.setItem('auth', JSON.stringify(response));
+
+            // Initialize the application user information and http header options
+            this._appService.initApplication();
+
+            // Navigate the the home page of the application
             this._router.navigate(['/sample']);
         });
     }

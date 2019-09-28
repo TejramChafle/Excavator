@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { Contact } from 'app/main/configuration/contacts/contact.model';
+import { ContactsService } from '../contacts.service';
+import { AppService } from 'app/app.service';
 
 @Component({
     selector: 'contacts-contact-form-dialog',
@@ -27,7 +29,9 @@ export class ContactsContactFormDialogComponent {
     constructor(
         public matDialogRef: MatDialogRef<ContactsContactFormDialogComponent>,
         @Inject(MAT_DIALOG_DATA) private _data: any,
-        private _formBuilder: FormBuilder
+        private _formBuilder: FormBuilder,
+        private _contactsService: ContactsService,
+        private _appService: AppService
     ) {
         // Set the defaults
         this.action = _data.action;
@@ -58,7 +62,7 @@ export class ContactsContactFormDialogComponent {
             _id:        [this.contact._id],
             firstname:  [this.contact.firstname],
             lastname:   [this.contact.lastname],
-            avatar:     [this.contact.avatar],
+            // avatar:     [this.contact.avatar],
             gender:     [this.contact.gender],
             email:      [this.contact.email],
             mobile:     [this.contact.mobile],
@@ -70,5 +74,24 @@ export class ContactsContactFormDialogComponent {
             description: [this.contact.description],
             tag: [this.contact.tag]
         });
+    }
+
+
+    // Do save/update contact information on click of add/save button
+    onSubmit(formData): void {
+        console.log('formData', formData);
+
+        // If the contact id exist then update and save the contact
+        if (formData._id) {
+            this._contactsService.updateContact(formData).then((response) => {
+                this._appService.handleMessage(response.message || 'Contact information updated successfully.', 'Success');
+                this.matDialogRef.close(true);
+            });
+        } else {
+            this._contactsService.createContact(formData).then((response) => {
+                this._appService.handleMessage(response.message || 'New contact created successfully.', 'Success');
+                this.matDialogRef.close(true);
+            });
+        }
     }
 }

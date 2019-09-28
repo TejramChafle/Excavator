@@ -30,7 +30,7 @@ const routes: Routes = [
         resolve: {
             contacts: ContactsService
         },
-        // canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
     }
 ];
 

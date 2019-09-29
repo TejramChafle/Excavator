@@ -83,11 +83,17 @@ export class ContactsContactFormDialogComponent {
 
         // If the contact id exist then update and save the contact
         if (formData._id) {
+            formData.updated_by = this._appService.user._id;
+            formData.updated_date = new Date();
             this._contactsService.updateContact(formData).then((response) => {
                 this._appService.handleMessage(response.message || 'Contact information updated successfully.', 'Success');
                 this.matDialogRef.close(true);
             });
         } else {
+            formData.created_by = this._appService.user._id;
+            formData.updated_by = this._appService.user._id;
+            formData.created_date = new Date();
+            formData.updated_date = new Date();
             this._contactsService.createContact(formData).then((response) => {
                 this._appService.handleMessage(response.message || 'New contact created successfully.', 'Success');
                 this.matDialogRef.close(true);

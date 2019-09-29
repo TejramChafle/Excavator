@@ -93,6 +93,10 @@
                 </button>
 
                 <mat-menu #moreMenu="matMenu">
+                    <button mat-menu-item aria-label="change_history" (click)="disableContact(contact)">
+                        <mat-icon>change_history</mat-icon>
+                        <span>Disable</span>
+                    </button>
                     <button mat-menu-item aria-label="remove" (click)="deleteContact(contact)">
                         <mat-icon>delete</mat-icon>
                         <span>Remove</span>

@@ -10,6 +10,7 @@ import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/conf
 
 import { ContactsService } from 'app/main/configuration/contacts/contacts.service';
 import { ContactsContactFormDialogComponent } from 'app/main/configuration/contacts/contact-form/contact-form.component';
+import { AppService } from 'app/app.service';
 
 @Component({
     selector: 'contacts-contact-list',
@@ -43,7 +44,8 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
      */
     constructor(
         private _contactsService: ContactsService,
-        public _matDialog: MatDialog
+        public _matDialog: MatDialog,
+        public _appService: AppService
     ) {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
@@ -193,6 +195,25 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
         }
 
         this._contactsService.updateUserData(this.user);
+    }
+
+    disableContact(contact): void {
+        this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
+            disableClose: false
+        });
+
+        this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to disable?';
+
+        this.confirmDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                contact.is_active = false;
+                contact.updated_by = this._appService.user._id;
+                contact.updated_date = new Date();
+                this._contactsService.updateContact(contact);
+            }
+            this.confirmDialogRef = null;
+        });
+
     }
 }
 

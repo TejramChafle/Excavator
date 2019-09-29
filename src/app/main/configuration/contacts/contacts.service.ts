@@ -84,9 +84,21 @@ export class ContactsService implements Resolve<any> {
      *
      * @returns {Promise<any>}
      */
-    getContacts(): Promise<any> {
+    getContacts(params?: any): Promise<any> {
+        let url = apiBaseUrl + 'contact/';
+        if (params && params.page) {
+            url += '?page=' + params.page + '&limit=' + params.limit;
+        } else {
+            url += '?page=1&limit=10';
+        }
+        if (params && params.firstname) {
+            url += '&firstname=' + params.firstname;
+        } else if (this.searchText && this.searchText.trim().length) {
+            url += '&firstname=' + this.searchText.trim();
+        }
+
         return new Promise((resolve, reject) => {
-            this._httpClient.get(apiBaseUrl + 'contact/?page=1&limit=10', this._appService.httpOptions)
+            this._httpClient.get(url, this._appService.httpOptions)
                 .subscribe((response: any) => {
                     this.contacts = response.docs;
 
@@ -102,9 +114,9 @@ export class ContactsService implements Resolve<any> {
                         });
                     }
 
-                    if (this.searchText && this.searchText !== '') {
+                    /* if (this.searchText && this.searchText !== '') {
                         this.contacts = FuseUtils.filterArrayByString(this.contacts, this.searchText);
-                    }
+                    } */
 
                     this.contacts = this.contacts.map(contact => {
                         return new Contact(contact);
@@ -267,11 +279,32 @@ export class ContactsService implements Resolve<any> {
      *
      * @param contact
      */
-    deleteContact(contact): void {
+    /* deleteContact(contact): void {
         const contactIndex = this.contacts.indexOf(contact);
         this.contacts.splice(contactIndex, 1);
         this.onContactsChanged.next(this.contacts);
+    } */
+
+
+    /**
+     * Delete contact
+     *
+     * @param contact
+     * @returns {Promise<any>}
+     */
+    deleteContact(contact): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this._httpClient.delete(apiBaseUrl + 'contact/' + contact._id, this._appService.httpOptions)
+                .subscribe(response => {
+                    this.getContacts();
+                    resolve(response);
+                }, (error) => {
+                    this._appService.handleError(error);
+                    return reject;
+                });
+        });
     }
+
 
     /**
      * Delete selected contacts

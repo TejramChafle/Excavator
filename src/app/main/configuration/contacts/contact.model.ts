@@ -17,7 +17,7 @@ export class Contact {
     _id: string;
     firstname: string;
     lastname: string;
-    avatar: string;
+    // avatar: string;
     gender: string;
     mobile: string;
     phone: string;
@@ -52,7 +52,7 @@ export class Contact {
             this._id = contact._id;
             this.firstname = contact.firstname || '';
             this.lastname = contact.lastname || '';
-            this.avatar = contact.avatar || 'assets/images/avatars/profile.jpg';
+            // this.avatar = contact.avatar || 'assets/images/avatars/profile.jpg';
             this.gender = contact.gender || '';
             this.mobile = contact.mobile || '';
             this.phone = contact.phone || '';
@@ -62,7 +62,7 @@ export class Contact {
             this.address = contact.address || '';
             this.birthday = contact.birthday || '';
             this.description = contact.description || '';
-            this.tag = contact.tag || '';
+            this.tag = contact.tag;
         }
     }
 }

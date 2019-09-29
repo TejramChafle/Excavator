@@ -62,7 +62,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
         this.searchInput.valueChanges
             .pipe(
                 takeUntil(this._unsubscribeAll),
-                debounceTime(300),
+                debounceTime(1000),
                 distinctUntilChanged()
             )
             .subscribe(searchText => {

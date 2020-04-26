@@ -13,7 +13,7 @@ import { AppService } from 'app/app.service';
     encapsulation: ViewEncapsulation.None
 })
 
-export class ContactsContactFormDialogComponent {
+export class ContactFormDialogComponent {
     action: string;
     contact: Contact;
     contactForm: FormGroup;
@@ -22,12 +22,12 @@ export class ContactsContactFormDialogComponent {
     /**
      * Constructor
      *
-     * @param {MatDialogRef<ContactsContactFormDialogComponent>} matDialogRef
+     * @param {MatDialogRef<ContactFormDialogComponent>} matDialogRef
      * @param _data
      * @param {FormBuilder} _formBuilder
      */
     constructor(
-        public matDialogRef: MatDialogRef<ContactsContactFormDialogComponent>,
+        public matDialogRef: MatDialogRef<ContactFormDialogComponent>,
         @Inject(MAT_DIALOG_DATA) private _data: any,
         private _formBuilder: FormBuilder,
         private _contactsService: ContactsService,

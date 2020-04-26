@@ -15,20 +15,18 @@ import { MatToolbarModule } from '@angular/material/toolbar'; */
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 
-import { ContactsComponent } from 'app/main/configuration/contacts/contacts.component';
-import { ContactsService } from 'app/main/configuration/contacts/contacts.service';
-import { ContactsContactListComponent } from 'app/main/configuration/contacts/contact-list/contact-list.component';
-import { ContactsSelectedBarComponent } from 'app/main/configuration/contacts/selected-bar/selected-bar.component';
-import { ContactsMainSidebarComponent } from 'app/main/configuration/contacts/sidebars/main/main.component';
-import { ContactFormDialogComponent } from 'app/main/configuration/contacts/contact-form/contact-form.component';
+import { EmployeesComponent } from 'app/main/configuration/employees/employees.component';
+import { EmployeesService } from 'app/main/configuration/employees/employees.service';
+import { EmployeeListComponent } from 'app/main/configuration/employees/employees-list/employee-list.component';
+import { EmployeeFormDialogComponent } from 'app/main/configuration/employees/employees-form/employee-form.component';
 import { AuthGuard } from 'app/guard/auth.guard';
 
 const routes: Routes = [
     {
-        path: 'contacts',
-        component: ContactsComponent,
+        path: 'employees',
+        component: EmployeesComponent,
         resolve: {
-            contacts: ContactsService
+            employees: EmployeesService
         },
         canActivate: [AuthGuard]
     }
@@ -36,11 +34,9 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [
-        ContactsComponent,
-        ContactsContactListComponent,
-        ContactsSelectedBarComponent,
-        ContactsMainSidebarComponent,
-        ContactFormDialogComponent
+        EmployeesComponent,
+        EmployeeListComponent,
+        EmployeeFormDialogComponent
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -61,12 +57,12 @@ const routes: Routes = [
         FuseSidebarModule
     ],
     providers: [
-        ContactsService
+        EmployeesService
     ],
     entryComponents: [
-        ContactFormDialogComponent
+        EmployeeFormDialogComponent
     ]
 })
 
-export class ContactsModule {
+export class EmployeesModule {
 }

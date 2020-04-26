@@ -27,6 +27,20 @@ export const navigation: FuseNavigation[] = [
                 type     : 'item',
                 icon     : 'contacts',
                 url      : '/contacts'
+            },
+            {
+                id       : 'employees',
+                title    : 'Employees',
+                type     : 'item',
+                icon     : 'people',
+                url      : '/employees'
+            },
+            {
+                id       : 'tag',
+                title    : 'Tags',
+                type     : 'item',
+                icon     : 'label',
+                url      : '/tag'
             }
         ]
     }

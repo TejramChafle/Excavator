@@ -30,7 +30,7 @@ var router      = express.Router();
 // USER LOGIN
 router.post("/login", async (req, resp) => {
     // CHECK if the username & password matches with the password present in db
-    User.findOne({ username: req.body.username, is_active: true }).exec().then(async (user) => {
+    User.findOne({ username: req.body.username, is_active: true }).populate('user').exec().then(async (user) => {
         // Compare the password to match with the password saved in db
         if (!await user.comparePassword(req.body.password)) {
             // 401: Unauthorized. Authentication failed to due mismatch in credentials.
@@ -42,14 +42,9 @@ router.post("/login", async (req, resp) => {
             const token = jwt.sign({ username: user.username, id: user._id }, process.env.JWT_ACCESS_KEY, { expiresIn: "24h" });
 
             // TODO: Store the token and other detail in Authentication table
-
-            // GET the contact detail
-            Contact.findById(user.contact_id).exec().then(contact => {
-                resp.status(201).json({
-                    user: contact,
-                    auth: user,
-                    token: token
-                });
+            resp.status(201).json({
+                auth: user,
+                token: token
             });
         }
     }).catch(error => {

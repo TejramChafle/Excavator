@@ -7,20 +7,20 @@ import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
-import { ContactsService } from 'app/main/configuration/contacts/contacts.service';
-import { ContactFormDialogComponent } from 'app/main/configuration/contacts/contact-form/contact-form.component';
+import { EmployeesService } from 'app/main/configuration/employees/employees.service';
+import { EmployeeFormDialogComponent } from 'app/main/configuration/employees/employees-form/employee-form.component';
 
 @Component({
-    selector: 'contacts',
-    templateUrl: './contacts.component.html',
-    styleUrls: ['./contacts.component.scss'],
+    selector: 'employees',
+    templateUrl: './employees.component.html',
+    styleUrls: ['./employees.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
 
-export class ContactsComponent implements OnInit, OnDestroy {
+export class EmployeesComponent implements OnInit, OnDestroy {
     dialogRef: any;
-    hasSelectedContacts: boolean;
+    hasSelectedEmployees: boolean;
     searchInput: FormControl;
 
     // Private
@@ -29,12 +29,12 @@ export class ContactsComponent implements OnInit, OnDestroy {
     /**
      * Constructor
      *
-     * @param {ContactsService} _contactsService
+     * @param {EmployeesService} _employeesService
      * @param {FuseSidebarService} _fuseSidebarService
      * @param {MatDialog} _matDialog
      */
     constructor(
-        private _contactsService: ContactsService,
+        private _employeesService: EmployeesService,
         private _fuseSidebarService: FuseSidebarService,
         private _matDialog: MatDialog
     ) {
@@ -53,10 +53,10 @@ export class ContactsComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-        this._contactsService.onSelectedContactsChanged
+        this._employeesService.onSelectedEmployeesChanged
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(selectedContacts => {
-                this.hasSelectedContacts = selectedContacts.length > 0;
+            .subscribe(selectedEmployees => {
+                this.hasSelectedEmployees = selectedEmployees.length > 0;
             });
 
         this.searchInput.valueChanges
@@ -66,7 +66,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
                 distinctUntilChanged()
             )
             .subscribe(searchText => {
-                this._contactsService.onSearchTextChanged.next(searchText);
+                this._employeesService.onSearchTextChanged.next(searchText);
             });
     }
 
@@ -84,10 +84,10 @@ export class ContactsComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * New contact
+     * New employee
      */
-    newContact(): void {
-        this.dialogRef = this._matDialog.open(ContactFormDialogComponent, {
+    newEmployee(): void {
+        this.dialogRef = this._matDialog.open(EmployeeFormDialogComponent, {
             panelClass: 'form-dialog',
             data: {
                 action: 'new'
@@ -100,7 +100,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
                     return;
                 }
 
-                this._contactsService.updateContact(response.getRawValue());
+                this._employeesService.updateEmployee(response.getRawValue());
             });
     }
 

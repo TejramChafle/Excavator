@@ -8,27 +8,27 @@ import { takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 
-import { ContactsService } from 'app/main/configuration/contacts/contacts.service';
-import { ContactFormDialogComponent } from 'app/main/configuration/contacts/contact-form/contact-form.component';
+import { EmployeesService } from 'app/main/configuration/employees/employees.service';
+import { EmployeeFormDialogComponent } from 'app/main/configuration/employees/employees-form/employee-form.component';
 import { AppService } from 'app/app.service';
 
 @Component({
-    selector: 'contacts-contact-list',
-    templateUrl: './contact-list.component.html',
-    styleUrls: ['./contact-list.component.scss'],
+    selector: 'employee-list',
+    templateUrl: './employee-list.component.html',
+    styleUrls: ['./employee-list.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
 
-export class ContactsContactListComponent implements OnInit, OnDestroy {
+export class EmployeeListComponent implements OnInit, OnDestroy {
     @ViewChild('dialogContent', { static: false })
     dialogContent: TemplateRef<any>;
 
-    contacts: any;
+    employees: any;
     user: any;
     dataSource: FilesDataSource | null;
     displayedColumns = ['firstname', 'email', 'mobile', 'phone', 'designation', 'company', 'buttons'];
-    selectedContacts: any[];
+    selectedEmployees: any[];
     checkboxes: {};
     dialogRef: any;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
@@ -39,11 +39,11 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
     /**
      * Constructor
      *
-     * @param {ContactsService} _contactsService
+     * @param {EmployeesService} _employeesService
      * @param {MatDialog} _matDialog
      */
     constructor(
-        private _contactsService: ContactsService,
+        private _employeesService: EmployeesService,
         public _matDialog: MatDialog,
         public _appService: AppService
     ) {
@@ -59,42 +59,42 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-        this.dataSource = new FilesDataSource(this._contactsService);
+        this.dataSource = new FilesDataSource(this._employeesService);
 
-        this._contactsService.onContactsChanged
+        this._employeesService.onEmployeesChanged
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(contacts => {
-                this.contacts = contacts;
+            .subscribe(employees => {
+                this.employees = employees;
 
                 this.checkboxes = {};
-                contacts.map(contact => {
-                    this.checkboxes[contact._id] = false;
+                employees.map(employee => {
+                    this.checkboxes[employee._id] = false;
                 });
             });
 
-        this._contactsService.onSelectedContactsChanged
+        this._employeesService.onSelectedEmployeesChanged
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(selectedContacts => {
+            .subscribe(selectedEmployees => {
                 for (const id in this.checkboxes) {
                     if (!this.checkboxes.hasOwnProperty(id)) {
                         continue;
                     }
 
-                    this.checkboxes[id] = selectedContacts.includes(id);
+                    this.checkboxes[id] = selectedEmployees.includes(id);
                 }
-                this.selectedContacts = selectedContacts;
+                this.selectedEmployees = selectedEmployees;
             });
 
-        /* this._contactsService.onUserDataChanged
+        /* this._employeesService.onUserDataChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(user => {
                 this.user = user;
             }); */
 
-        this._contactsService.onFilterChanged
+        this._employeesService.onFilterChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(() => {
-                this._contactsService.deselectContacts();
+                this._employeesService.deselectEmployees();
             });
     }
 
@@ -112,15 +112,15 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * Edit contact
+     * Edit employee
      *
-     * @param contact
+     * @param employee
      */
-    editContact(contact): void {
-        this.dialogRef = this._matDialog.open(ContactFormDialogComponent, {
-            panelClass: 'contact-form-dialog',
+    editEmployee(employee): void {
+        this.dialogRef = this._matDialog.open(EmployeeFormDialogComponent, {
+            panelClass: 'form-dialog',
             data: {
-                contact: contact,
+                employee: employee,
                 action: 'edit'
             }
         });
@@ -138,7 +138,7 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
                 //      */
                 //     case 'save':
 
-                //         this._contactsService.updateContact(formData.getRawValue());
+                //         this._employeesService.updateEmployee(formData.getRawValue());
 
                 //         break;
                 //     /**
@@ -146,7 +146,7 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
                 //      */
                 //     case 'delete':
 
-                //         this.deleteContact(contact);
+                //         this.deleteEmployee(employee);
 
                 //         break;
                 // }
@@ -154,9 +154,9 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Delete Contact
+     * Delete Employee
      */
-    deleteContact(contact): void {
+    deleteEmployee(employee): void {
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });
@@ -165,7 +165,7 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this._contactsService.deleteContact(contact);
+                this._employeesService.deleteEmployee(employee);
             }
             this.confirmDialogRef = null;
         });
@@ -175,29 +175,29 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
     /**
      * On selected change
      *
-     * @param contactId
+     * @param employeeId
      */
-    onSelectedChange(contactId): void {
-        this._contactsService.toggleSelectedContact(contactId);
+    onSelectedChange(employeeId): void {
+        this._employeesService.toggleSelectedEmployee(employeeId);
     }
 
     /**
      * Toggle star
      *
-     * @param contactId
+     * @param employeeId
      */
-    toggleStar(contactId): void {
-        if (this.user.starred.includes(contactId)) {
-            this.user.starred.splice(this.user.starred.indexOf(contactId), 1);
+    toggleStar(employeeId): void {
+        if (this.user.starred.includes(employeeId)) {
+            this.user.starred.splice(this.user.starred.indexOf(employeeId), 1);
         }
         else {
-            this.user.starred.push(contactId);
+            this.user.starred.push(employeeId);
         }
 
-        this._contactsService.updateUserData(this.user);
+        this._employeesService.updateUserData(this.user);
     }
 
-    disableContact(contact): void {
+    disableEmployee(employee): void {
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });
@@ -206,10 +206,10 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                contact.is_active = false;
-                contact.updated_by = this._appService.user._id;
-                contact.updated_date = new Date();
-                this._contactsService.updateContact(contact);
+                employee.is_active = false;
+                employee.updated_by = this._appService.user._id;
+                employee.updated_date = new Date();
+                this._employeesService.updateEmployee(employee);
             }
             this.confirmDialogRef = null;
         });
@@ -222,10 +222,10 @@ export class FilesDataSource extends DataSource<any>
     /**
      * Constructor
      *
-     * @param {ContactsService} _contactsService
+     * @param {EmployeesService} _employeesService
      */
     constructor(
-        private _contactsService: ContactsService
+        private _employeesService: EmployeesService
     ) {
         super();
     }
@@ -235,7 +235,7 @@ export class FilesDataSource extends DataSource<any>
      * @returns {Observable<any[]>}
      */
     connect(): Observable<any[]> {
-        return this._contactsService.onContactsChanged;
+        return this._employeesService.onEmployeesChanged;
     }
 
     /**

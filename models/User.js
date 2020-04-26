@@ -4,7 +4,7 @@ var bcrypt = require('bcrypt');
 // The user schema only defines the application level user. This will help to manage authentication & authorization
 const UserSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    contact_id: {
+    user: {
         type: mongoose.Schema.Types.ObjectId, // id used to get the user detail from contact info (every user must be a contact)
         ref: 'Contact',
         required: true

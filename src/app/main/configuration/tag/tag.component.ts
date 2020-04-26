@@ -7,20 +7,20 @@ import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
-import { ContactsService } from 'app/main/configuration/contacts/contacts.service';
-import { ContactFormDialogComponent } from 'app/main/configuration/contacts/contact-form/contact-form.component';
+import { TagService } from 'app/main/configuration/tag/tag.service';
+import { TagFormDialogComponent } from 'app/main/configuration/tag/tag-form/tag-form.component';
 
 @Component({
-    selector: 'contacts',
-    templateUrl: './contacts.component.html',
-    styleUrls: ['./contacts.component.scss'],
+    selector: 'tag',
+    templateUrl: './tag.component.html',
+    styleUrls: ['./tag.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
 
-export class ContactsComponent implements OnInit, OnDestroy {
+export class TagComponent implements OnInit, OnDestroy {
     dialogRef: any;
-    hasSelectedContacts: boolean;
+    hasSelectedTag: boolean;
     searchInput: FormControl;
 
     // Private
@@ -29,12 +29,12 @@ export class ContactsComponent implements OnInit, OnDestroy {
     /**
      * Constructor
      *
-     * @param {ContactsService} _contactsService
+     * @param {TagService} _tagService
      * @param {FuseSidebarService} _fuseSidebarService
      * @param {MatDialog} _matDialog
      */
     constructor(
-        private _contactsService: ContactsService,
+        private _tagService: TagService,
         private _fuseSidebarService: FuseSidebarService,
         private _matDialog: MatDialog
     ) {
@@ -53,10 +53,10 @@ export class ContactsComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-        this._contactsService.onSelectedContactsChanged
+        this._tagService.onSelectedTagChanged
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(selectedContacts => {
-                this.hasSelectedContacts = selectedContacts.length > 0;
+            .subscribe(selectedTag => {
+                this.hasSelectedTag = selectedTag.length > 0;
             });
 
         this.searchInput.valueChanges
@@ -66,7 +66,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
                 distinctUntilChanged()
             )
             .subscribe(searchText => {
-                this._contactsService.onSearchTextChanged.next(searchText);
+                this._tagService.onSearchTextChanged.next(searchText);
             });
     }
 
@@ -84,10 +84,10 @@ export class ContactsComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * New contact
+     * New tag
      */
-    newContact(): void {
-        this.dialogRef = this._matDialog.open(ContactFormDialogComponent, {
+    newTag(): void {
+        this.dialogRef = this._matDialog.open(TagFormDialogComponent, {
             panelClass: 'form-dialog',
             data: {
                 action: 'new'
@@ -100,7 +100,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
                     return;
                 }
 
-                this._contactsService.updateContact(response.getRawValue());
+                this._tagService.updateTag(response.getRawValue());
             });
     }
 

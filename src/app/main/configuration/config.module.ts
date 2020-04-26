@@ -8,6 +8,11 @@ const routes = [
         path: 'contacts',
         loadChildren: './contacts/contacts.module#ContactsModule',
         // canActivate: [ AuthGuard ]
+    },
+    {
+        path: 'employees',
+        loadChildren: './employees/employees.module#EmployeesModule',
+        // canActivate: [ AuthGuard ]
     }
 ];
 

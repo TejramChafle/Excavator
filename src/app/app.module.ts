@@ -25,6 +25,8 @@ import { AuthGuard } from './guard/auth.guard';
 import { FuseAlertDialogComponent } from '@fuse/components/alert-dialog/alert-dialog.component';
 import { ConfigModule } from './main/configuration/config.module';
 import { ContactsModule } from './main/configuration/contacts/contacts.module';
+import { EmployeesModule } from './main/configuration/employees/employees.module';
+import { TagModule } from './main/configuration/tag/tag.module';
 
 const appRoutes: Routes = [
     {
@@ -66,7 +68,9 @@ const appRoutes: Routes = [
         SampleModule,
         AuthModule,
         // ConfigModule
-        ContactsModule
+        ContactsModule,
+        EmployeesModule,
+        TagModule
     ],
     entryComponents: [
         FuseAlertDialogComponent

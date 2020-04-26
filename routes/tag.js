@@ -22,7 +22,7 @@ var router      = express.Router();
  */
 // GET TAGS (Only active)
 router.get('/', auth, (req, resp) => {
-    Tag.where({ is_active: true }).exec().then(tags => {
+    Tag.where({ is_active: true }).populate('created_by').populate('updated_by').exec().then(tags => {
         return resp.status(200).json(tags);
     }).catch(error => {
         console.log('error : ', error);

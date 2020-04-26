@@ -19,13 +19,13 @@ const TagSchema = new mongoose.Schema({
     // created by user id
     created_by: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Contact',
         required: true
     },
     // last updated by user id
     updated_by: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Contact',
         required: true
     },
     // date & time of record creation

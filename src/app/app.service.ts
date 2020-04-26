@@ -21,7 +21,8 @@ export class AppService {
     initApplication(): void {
         // Set user information for the logged in user at the application level if the user is logged in
         if (localStorage.getItem('auth')) {
-            this.user = JSON.parse(localStorage.getItem('auth')).user;
+            this.user = JSON.parse(localStorage.getItem('auth')).auth.user;
+            this.user._id = JSON.parse(localStorage.getItem('auth')).auth.user._id;
             this.user.role = JSON.parse(localStorage.getItem('auth')).auth.role;
             this.user.username = JSON.parse(localStorage.getItem('auth')).auth.username;
 

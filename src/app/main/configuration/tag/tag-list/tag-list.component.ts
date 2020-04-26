@@ -8,27 +8,28 @@ import { takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 
-import { ContactsService } from 'app/main/configuration/contacts/contacts.service';
-import { ContactFormDialogComponent } from 'app/main/configuration/contacts/contact-form/contact-form.component';
+import { TagService } from 'app/main/configuration/tag/tag.service';
+import { TagFormDialogComponent } from 'app/main/configuration/tag/tag-form/tag-form.component';
 import { AppService } from 'app/app.service';
 
 @Component({
-    selector: 'contacts-contact-list',
-    templateUrl: './contact-list.component.html',
-    styleUrls: ['./contact-list.component.scss'],
+    selector: 'tag-list',
+    templateUrl: './tag-list.component.html',
+    styleUrls: ['./tag-list.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
 
-export class ContactsContactListComponent implements OnInit, OnDestroy {
+export class TagListComponent implements OnInit, OnDestroy {
     @ViewChild('dialogContent', { static: false })
     dialogContent: TemplateRef<any>;
 
-    contacts: any;
+    tags: any;
     user: any;
     dataSource: FilesDataSource | null;
-    displayedColumns = ['firstname', 'email', 'mobile', 'phone', 'designation', 'company', 'buttons'];
-    selectedContacts: any[];
+    // 'updatedby', ,'createdon', 'updatedon', 
+    displayedColumns = ['checkbox', 'name', 'purpose', 'created_by', 'created_date', 'updated_by', 'updated_date', 'buttons'];
+    selectedTag: any[];
     checkboxes: {};
     dialogRef: any;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
@@ -39,11 +40,11 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
     /**
      * Constructor
      *
-     * @param {ContactsService} _contactsService
+     * @param {TagService} _tagService
      * @param {MatDialog} _matDialog
      */
     constructor(
-        private _contactsService: ContactsService,
+        private _tagService: TagService,
         public _matDialog: MatDialog,
         public _appService: AppService
     ) {
@@ -59,43 +60,46 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-        this.dataSource = new FilesDataSource(this._contactsService);
+        this.dataSource = new FilesDataSource(this._tagService);
 
-        this._contactsService.onContactsChanged
+        this._tagService.onTagChanged
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(contacts => {
-                this.contacts = contacts;
+            .subscribe(tags => {
+                console.log(tags);
+                this.tags = tags;
 
                 this.checkboxes = {};
-                contacts.map(contact => {
-                    this.checkboxes[contact._id] = false;
+                tags.map(tag => {
+                    this.checkboxes[tag._id] = false;
                 });
             });
 
-        this._contactsService.onSelectedContactsChanged
+        this._tagService.onSelectedTagChanged
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(selectedContacts => {
+            .subscribe(selectedTag => {
                 for (const id in this.checkboxes) {
                     if (!this.checkboxes.hasOwnProperty(id)) {
                         continue;
                     }
 
-                    this.checkboxes[id] = selectedContacts.includes(id);
+                    this.checkboxes[id] = selectedTag.includes(id);
                 }
-                this.selectedContacts = selectedContacts;
+                this.selectedTag = selectedTag;
             });
 
-        /* this._contactsService.onUserDataChanged
+        /* this._tagService.onUserDataChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(user => {
                 this.user = user;
             }); */
 
-        this._contactsService.onFilterChanged
+        this._tagService.onFilterChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(() => {
-                this._contactsService.deselectContacts();
+                this._tagService.deselectTag();
             });
+
+        console.log('this.dataSource : ', this.dataSource);    
     }
 
     /**
@@ -112,15 +116,15 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * Edit contact
+     * Edit tag
      *
-     * @param contact
+     * @param tag
      */
-    editContact(contact): void {
-        this.dialogRef = this._matDialog.open(ContactFormDialogComponent, {
-            panelClass: 'contact-form-dialog',
+    editTag(tag): void {
+        this.dialogRef = this._matDialog.open(TagFormDialogComponent, {
+            panelClass: 'form-dialog',
             data: {
-                contact: contact,
+                tag: tag,
                 action: 'edit'
             }
         });
@@ -138,7 +142,7 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
                 //      */
                 //     case 'save':
 
-                //         this._contactsService.updateContact(formData.getRawValue());
+                //         this._tagService.updateTag(formData.getRawValue());
 
                 //         break;
                 //     /**
@@ -146,7 +150,7 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
                 //      */
                 //     case 'delete':
 
-                //         this.deleteContact(contact);
+                //         this.deleteTag(tag);
 
                 //         break;
                 // }
@@ -154,9 +158,9 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Delete Contact
+     * Delete Tag
      */
-    deleteContact(contact): void {
+    deleteTag(tag): void {
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });
@@ -165,7 +169,7 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this._contactsService.deleteContact(contact);
+                this._tagService.deleteTag(tag);
             }
             this.confirmDialogRef = null;
         });
@@ -175,29 +179,29 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
     /**
      * On selected change
      *
-     * @param contactId
+     * @param tagId
      */
-    onSelectedChange(contactId): void {
-        this._contactsService.toggleSelectedContact(contactId);
+    onSelectedChange(tagId): void {
+        this._tagService.toggleSelectedTag(tagId);
     }
 
     /**
      * Toggle star
      *
-     * @param contactId
+     * @param tagId
      */
-    toggleStar(contactId): void {
-        if (this.user.starred.includes(contactId)) {
-            this.user.starred.splice(this.user.starred.indexOf(contactId), 1);
+    toggleStar(tagId): void {
+        if (this.user.starred.includes(tagId)) {
+            this.user.starred.splice(this.user.starred.indexOf(tagId), 1);
         }
         else {
-            this.user.starred.push(contactId);
+            this.user.starred.push(tagId);
         }
 
-        this._contactsService.updateUserData(this.user);
+        this._tagService.updateUserData(this.user);
     }
 
-    disableContact(contact): void {
+    disableTag(tag): void {
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });
@@ -206,10 +210,10 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                contact.is_active = false;
-                contact.updated_by = this._appService.user._id;
-                contact.updated_date = new Date();
-                this._contactsService.updateContact(contact);
+                tag.is_active = false;
+                tag.updated_by = this._appService.user._id;
+                tag.updated_date = new Date();
+                this._tagService.updateTag(tag);
             }
             this.confirmDialogRef = null;
         });
@@ -222,10 +226,10 @@ export class FilesDataSource extends DataSource<any>
     /**
      * Constructor
      *
-     * @param {ContactsService} _contactsService
+     * @param {TagService} _tagService
      */
     constructor(
-        private _contactsService: ContactsService
+        private _tagService: TagService
     ) {
         super();
     }
@@ -235,7 +239,7 @@ export class FilesDataSource extends DataSource<any>
      * @returns {Observable<any[]>}
      */
     connect(): Observable<any[]> {
-        return this._contactsService.onContactsChanged;
+        return this._tagService.onTagChanged;
     }
 
     /**

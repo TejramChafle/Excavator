@@ -1,11 +1,6 @@
-// Import Fuse core library
-@import "@fuse/scss/core";
+@import "src/@fuse/scss/fuse";
 
-// Import app.theme.scss
-@import "app/app.theme";
-
-
-.form-dialog {
+.tag-form-dialog {
 
     @include media-breakpoint('xs') {
         width: 100%;
@@ -32,20 +27,5 @@
         max-height: 85vh;
         display: flex;
         flex-direction: column;
-    }
-}
-
-
-#add-record-button {
-    position: absolute;
-    bottom: 12px;
-    right: 12px;
-    padding: 0;
-    z-index: 99;
-
-    @include media-breakpoint('xs') {
-        position: sticky;
-        top: calc(100vh - 120px);
-        bottom: auto;
     }
 }

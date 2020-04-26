@@ -59,23 +59,15 @@ export class LockComponent implements OnInit {
      */
     ngOnInit(): void {
         this.lockForm = this._formBuilder.group({
-            // The below line of code doesn't work with the disable. Once the field is disabled, form field ignores username
-            /* username: [
-                {
-                    value: this._appService.user.username,
-                    disabled: true
-                }, Validators.required
-            ], */
             username: new FormControl({ value: this._appService.user.username, disabled: true }, Validators.required),
             password: new FormControl('', Validators.required)
-            // username: [this._appService.user.username, Validators.required],
-            // password: ['', Validators.required]
         });
     }
 
     // Unlock the application for the provided username & password form data
     unlock(form): any {
+        console.log('this.lockForm : ', {username: this.lockForm.controls.username.value, password: this.lockForm.controls.password.value});
         const loginComp = new LoginComponent(this._fuseConfigService, this._formBuilder, this._authService, this._appService, this._router);
-        loginComp.onSubmit(form);
+        loginComp.onSubmit({username: this.lockForm.controls.username.value, password: this.lockForm.controls.password.value});
     }
 }

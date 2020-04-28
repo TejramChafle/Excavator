@@ -76,10 +76,7 @@ export class LoginComponent implements OnInit {
 
     // Login on submit of the login form
     onSubmit(form): void {
-        console.log('login form : ', form);
         this._authService.login(form).subscribe((response) => {
-            console.log('response', response);
-
             // Save the login information in local storage
             localStorage.setItem('auth', JSON.stringify(response));
 

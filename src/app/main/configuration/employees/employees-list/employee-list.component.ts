@@ -27,7 +27,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
     employees: any;
     user: any;
     dataSource: FilesDataSource | null;
-    displayedColumns = ['firstname', 'email', 'mobile', 'phone', 'designation', 'company', 'buttons'];
+    displayedColumns = ['firstname', 'gender', 'email', 'mobile', 'phone', 'designation', 'company', 'buttons'];
     selectedEmployees: any[];
     checkboxes: {};
     dialogRef: any;

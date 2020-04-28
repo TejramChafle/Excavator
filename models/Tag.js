@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Paginate = require('mongoose-paginate');
 
 const TagSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
@@ -41,4 +42,5 @@ const TagSchema = new mongoose.Schema({
     }
 });
 
+TagSchema.plugin(Paginate);
 const Tag = module.exports = mongoose.model('Tag', TagSchema);

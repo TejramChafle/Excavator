@@ -19,9 +19,9 @@ router.get('/', auth, (req, resp) => {
     if (req.query.email) filter.email = new RegExp('.*' + req.query.email + '.*', 'i');
     if (req.query.company) filter.company = new RegExp('.*' + req.query.company + '.*', 'i');
     if (req.query.designation) filter.designation = new RegExp('.*' + req.query.designation + '.*', 'i');
-    if (req.query.tag) filter.tag = new RegExp('^' + req.query.tag + '$', 'i');
+    if (req.query.tag) filter.tag = req.query.tag;
 
-    Contact.paginate(filter, { sort: { _id: req.query.sort_order }, page: parseInt(req.query.page), limit: parseInt(req.query.limit) }, (error, result) => {
+    Contact.paginate(filter, { sort: { _id: req.query.sort_order }, page: parseInt(req.query.page), limit: parseInt(req.query.limit), populate: 'tag' }, (error, result) => {
         // 500 : Internal Sever Error. The request was not completed. The server met an unexpected condition.
         if (error) return resp.status(500).json({
             error: error

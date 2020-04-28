@@ -18,7 +18,7 @@ export class TagService implements Resolve<any> {
     onSearchTextChanged: Subject<any>;
     onFilterChanged: Subject<any>;
 
-    tags: Tag[];
+    tags: any = {};
     user: any;
     selectedTag: string[] = [];
 
@@ -90,23 +90,27 @@ export class TagService implements Resolve<any> {
         } else {
             url += '?page=1&limit=100';
         }
+
         if (params && params.name) {
             url += '&name=' + params.name;
         } else if (this.searchText && this.searchText.trim().length) {
             url += '&name=' + this.searchText.trim();
         }
 
+        if (params && params.purpose) {
+            url += '&purpose=' + params.purpose;
+        }
+
         return new Promise((resolve, reject) => {
             this._httpClient.get(url, this._appService.httpOptions)
                 .subscribe((response: any) => {
-                    console.log(response);
                     this.tags = response;
 
-                    /* this.tags = this.tags.map(tag => {
+                    /* this.tags.docs = this.tags.docs.map(tag => {
                         return new Tag(tag);
                     }); */
 
-                    this.onTagChanged.next(this.tags);
+                    this.onTagChanged.next(response.docs);
                     resolve(this.tags);
                 }, (error) => {
                     this._appService.handleError(error);
@@ -155,7 +159,7 @@ export class TagService implements Resolve<any> {
         // If there is no filter, select all tag
         if (filterParameter === undefined || filterValue === undefined) {
             this.selectedTag = [];
-            this.tags.map(tag => {
+            this.tags.docs.map(tag => {
                 this.selectedTag.push(tag._id);
             });
         }
@@ -254,13 +258,13 @@ export class TagService implements Resolve<any> {
      */
     deleteSelectedTag(): void {
         for (const tagId of this.selectedTag) {
-            const tag = this.tags.find(_tag => {
+            const tag = this.tags.docs.find(_tag => {
                 return _tag._id === tagId;
             });
-            const tagIndex = this.tags.indexOf(tag);
-            this.tags.splice(tagIndex, 1);
+            const tagIndex = this.tags.docs.indexOf(tag);
+            this.tags.docs.splice(tagIndex, 1);
         }
-        this.onTagChanged.next(this.tags);
+        this.onTagChanged.next(this.tags.docs);
         this.deselectTag();
     }
 

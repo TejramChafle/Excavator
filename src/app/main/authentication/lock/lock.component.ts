@@ -66,7 +66,6 @@ export class LockComponent implements OnInit {
 
     // Unlock the application for the provided username & password form data
     unlock(form): any {
-        console.log('this.lockForm : ', {username: this.lockForm.controls.username.value, password: this.lockForm.controls.password.value});
         const loginComp = new LoginComponent(this._fuseConfigService, this._formBuilder, this._authService, this._appService, this._router);
         loginComp.onSubmit({username: this.lockForm.controls.username.value, password: this.lockForm.controls.password.value});
     }

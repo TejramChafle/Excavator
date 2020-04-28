@@ -27,6 +27,16 @@
         </mat-cell>
     </ng-container>
 
+    <!-- Gender Column -->
+    <ng-container matColumnDef="gender">
+        <mat-header-cell *matHeaderCellDef fxHide.gt-sm>Gender</mat-header-cell>
+        <mat-cell *matCellDef="let contact" fxHide.gt-sm>
+            <p class="text-truncate">
+                {{contact.gender}}
+            </p>
+        </mat-cell>
+    </ng-container>
+
     <!-- Email Column -->
     <ng-container matColumnDef="email">
         <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>Email</mat-header-cell>
@@ -49,8 +59,8 @@
 
     <!-- Phone Column -->
     <ng-container matColumnDef="phone">
-        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>Phone</mat-header-cell>
-        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-lg>Phone</mat-header-cell>
+        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-lg>
             <p class="phone text-truncate">
                 {{contact.phone}}
             </p>
@@ -59,8 +69,8 @@
 
     <!-- Job Title Column -->
     <ng-container matColumnDef="designation">
-        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-lg>Designation</mat-header-cell>
-        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-lg>
+        <mat-header-cell *matHeaderCellDef fxShow.gt-sm>Designation</mat-header-cell>
+        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
             <p class="job-title text-truncate">
                 {{contact.designation}}
             </p>
@@ -69,8 +79,8 @@
 
     <!-- Company Column -->
     <ng-container matColumnDef="company">
-        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-lg>Company</mat-header-cell>
-        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-lg>
+        <mat-header-cell *matHeaderCellDef fxHide >Company</mat-header-cell>
+        <mat-cell *matCellDef="let contact" fxHide >
             <p class="company text-truncate">
                 {{contact.company}}
             </p>

@@ -71,10 +71,7 @@ export class TagFormDialogComponent {
 
 
     // Do save/update tag information on click of add/save button
-    onSubmit(formData): void {
-        console.log('formData', formData);
-        console.log('this._appService.user : ', this._appService.user);
-        
+    onSubmit(formData): void {        
         // If the tag id exist then update and save the tag
         if (formData._id) {
             formData.updated_by = this._appService.user._id;

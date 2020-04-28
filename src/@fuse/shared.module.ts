@@ -18,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
     imports  : [
@@ -50,6 +51,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         MatRippleModule,
         MatTableModule,
         MatToolbarModule,
+        MatSelectModule
     ]
 })
 export class FuseSharedModule

@@ -79,8 +79,6 @@ export class EmployeeFormDialogComponent {
 
     // Do save/update employee information on click of add/save button
     onSubmit(formData): void {
-        console.log('formData', formData);
-
         // If the employee id exist then update and save the employee
         if (formData._id) {
             formData.updated_by = this._appService.user._id;

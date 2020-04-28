@@ -28,7 +28,7 @@ export class TagListComponent implements OnInit, OnDestroy {
     user: any;
     dataSource: FilesDataSource | null;
     // 'updatedby', ,'createdon', 'updatedon', 
-    displayedColumns = ['checkbox', 'name', 'purpose', 'created_by', 'created_date', 'updated_by', 'updated_date', 'buttons'];
+    displayedColumns = ['name', 'purpose', 'created_by', 'created_date', 'updated_by', 'updated_date', 'buttons'];
     selectedTag: any[];
     checkboxes: {};
     dialogRef: any;
@@ -65,11 +65,10 @@ export class TagListComponent implements OnInit, OnDestroy {
         this._tagService.onTagChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(tags => {
-                console.log(tags);
                 this.tags = tags;
 
                 this.checkboxes = {};
-                tags.map(tag => {
+                tags.docs.map(tag => {
                     this.checkboxes[tag._id] = false;
                 });
             });

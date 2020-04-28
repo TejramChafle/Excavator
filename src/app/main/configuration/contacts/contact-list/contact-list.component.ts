@@ -27,7 +27,7 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
     contacts: any;
     user: any;
     dataSource: FilesDataSource | null;
-    displayedColumns = ['firstname', 'email', 'mobile', 'phone', 'designation', 'company', 'buttons'];
+    displayedColumns = ['firstname', 'gender', 'email', 'mobile', 'phone', 'designation', 'company', 'type', 'buttons'];
     selectedContacts: any[];
     checkboxes: {};
     dialogRef: any;

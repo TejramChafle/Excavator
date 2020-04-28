@@ -9,6 +9,8 @@ import { Employee } from 'app/main/configuration/employees/employee.model';
 
 import { apiBaseUrl } from 'app/app.config';
 import { AppService } from 'app/app.service';
+import { TagService } from 'app/main/configuration/tag/tag.service';
+
 
 @Injectable()
 export class EmployeesService implements Resolve<any> {
@@ -32,7 +34,8 @@ export class EmployeesService implements Resolve<any> {
      */
     constructor(
         private _httpClient: HttpClient,
-        private _appService: AppService
+        private _appService: AppService,
+        private _tagService: TagService
     ) {
         // Set the defaults
         this.onEmployeesChanged = new BehaviorSubject([]);
@@ -56,10 +59,15 @@ export class EmployeesService implements Resolve<any> {
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
         return new Promise((resolve, reject) => {
             Promise.all([
-                this.getEmployees(),
+                // this.getEmployees(),
                 // this.getUserData()
+                
             ]).then(
                 ([files]) => {
+
+                    this._tagService.getTag({purpose: 'Contact'}).then(tags=>{
+                        this.getEmployees();
+                    });
 
                     this.onSearchTextChanged.subscribe(searchText => {
                         this.searchText = searchText;
@@ -95,6 +103,13 @@ export class EmployeesService implements Resolve<any> {
             url += '&firstname=' + params.firstname;
         } else if (this.searchText && this.searchText.trim().length) {
             url += '&firstname=' + this.searchText.trim();
+        }
+
+        if (this._tagService.tags && this._tagService.tags.docs) {
+            let tag = this._tagService.tags.docs.find(doc=>{
+                return doc.name = 'Employee';
+            });
+            url += '&tag=' +tag._id;
         }
 
         return new Promise((resolve, reject) => {

@@ -39,8 +39,6 @@ export class AppService {
 
     // Handle errors/http errors from http services throughout the application
     handleError(response): void {
-        console.log('response', response);
-
         // If the user token is expired, redirect user to lock page to enter the password
         if (response.status === 401 && response.error.message === 'jwt expired') {
             this._router.navigate(['auth/lock']);

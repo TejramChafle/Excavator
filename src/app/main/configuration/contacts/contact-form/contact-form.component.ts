@@ -1,10 +1,11 @@
-import { Component, Inject, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, ViewEncapsulation, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { Contact } from 'app/main/configuration/contacts/contact.model';
 import { ContactsService } from '../contacts.service';
 import { AppService } from 'app/app.service';
+import { TagService } from 'app/main/configuration/tag/tag.service';
 
 @Component({
     selector: 'contacts-contact-form-dialog',
@@ -13,7 +14,7 @@ import { AppService } from 'app/app.service';
     encapsulation: ViewEncapsulation.None
 })
 
-export class ContactFormDialogComponent {
+export class ContactFormDialogComponent implements OnInit {
     action: string;
     contact: Contact;
     contactForm: FormGroup;
@@ -31,7 +32,8 @@ export class ContactFormDialogComponent {
         @Inject(MAT_DIALOG_DATA) private _data: any,
         private _formBuilder: FormBuilder,
         private _contactsService: ContactsService,
-        private _appService: AppService
+        private _appService: AppService,
+        public _tagService: TagService,
     ) {
         // Set the defaults
         this.action = _data.action;
@@ -46,6 +48,8 @@ export class ContactFormDialogComponent {
         }
 
         this.contactForm = this.createContactForm();
+
+        console.log('this.contact : ', this.contact);
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -72,15 +76,13 @@ export class ContactFormDialogComponent {
             address:    [this.contact.address],
             birthday:   [this.contact.birthday],
             description: [this.contact.description],
-            tag: [this.contact.tag]
+            tag: [this.contact.tag && this.contact.tag['_id'] ? this.contact.tag['_id'] : null]
         });
     }
 
 
     // Do save/update contact information on click of add/save button
     onSubmit(formData): void {
-        console.log('formData', formData);
-
         // If the contact id exist then update and save the contact
         if (formData._id) {
             formData.updated_by = this._appService.user._id;
@@ -99,5 +101,15 @@ export class ContactFormDialogComponent {
                 this.matDialogRef.close(true);
             });
         }
+    }
+
+
+    /**
+     * On page initialize get the list of tags of the purpose CONTACT
+     */
+    ngOnInit(): void {
+        this._tagService.getTag({purpose: 'Contact'}).then(tags => {
+            // console.log('Tags : ', tags);
+        });
     }
 }

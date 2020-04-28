@@ -22,7 +22,7 @@ var router      = express.Router();
  */
 // GET TAGS (Only active)
 router.get('/', auth, (req, resp) => {
-    Tag.where({ is_active: true }).populate('created_by').populate('updated_by').exec().then(tags => {
+    /* Tag.where({ is_active: true }).populate('created_by').populate('updated_by').exec().then(tags => {
         return resp.status(200).json(tags);
     }).catch(error => {
         console.log('error : ', error);
@@ -30,6 +30,20 @@ router.get('/', auth, (req, resp) => {
         return resp.status(500).json({
             error: error
         });
+    }); */
+
+    let filter = {};
+    filter.is_active = req.query.is_active || true;
+    if (req.query.name) filter.name = new RegExp('.*' + req.query.name + '.*', 'i');
+    if (req.query.purpose) filter.purpose = new RegExp('^' + req.query.purpose + '$', 'i');
+
+    Tag.paginate(filter, { sort: { _id: req.query.sort_order }, page: parseInt(req.query.page), limit: parseInt(req.query.limit), populate: ['created_by', 'updated_by'] }, (error, result) => {
+        // 500 : Internal Sever Error. The request was not completed. The server met an unexpected condition.
+        if (error) return resp.status(500).json({
+            error: error
+        });
+
+        return resp.status(200).json(result);
     });
 });
 

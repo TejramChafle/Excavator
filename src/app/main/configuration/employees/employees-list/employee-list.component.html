@@ -127,4 +127,10 @@
     </mat-row>
 </mat-table>
 
-
+<!-- PAGINATION -->
+<mat-paginator 
+    [length]="_employeesService.employees.total" 
+    [pageSize]="_employeesService.employees.limit" 
+    [pageSizeOptions]="[10, 20, 50, 100]"
+    (page)="onPageChange($event)">
+</mat-paginator>

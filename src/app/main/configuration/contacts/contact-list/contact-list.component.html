@@ -138,3 +138,11 @@
 </mat-table>
 
 
+<!-- PAGINATION -->
+<mat-paginator 
+    [length]="_contactsService.contacts.total" 
+    [pageSize]="_contactsService.contacts.limit" 
+    [pageSizeOptions]="[10, 20, 50, 100]"
+    (page)="onPageChange($event)">
+</mat-paginator>
+

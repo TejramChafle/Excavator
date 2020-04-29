@@ -68,7 +68,7 @@ export class TagListComponent implements OnInit, OnDestroy {
                 this.tags = tags;
 
                 this.checkboxes = {};
-                tags.docs.map(tag => {
+                tags.map(tag => {
                     this.checkboxes[tag._id] = false;
                 });
             });
@@ -217,6 +217,14 @@ export class TagListComponent implements OnInit, OnDestroy {
             this.confirmDialogRef = null;
         });
 
+    }
+
+    // Load data on page change
+    onPageChange(page) {
+        console.log(page);
+        this._tagService.getTag({ page: page.pageIndex + 1, limit: page.pageSize }).then(result => {
+            console.log('on page change : ', result);
+        });
     }
 }
 

@@ -18,7 +18,8 @@ export class ContactsService implements Resolve<any> {
     onSearchTextChanged: Subject<any>;
     onFilterChanged: Subject<any>;
 
-    contacts: Contact[];
+    // contacts: Contact[];
+    contacts: any = {};
     user: any;
     selectedContacts: string[] = [];
 
@@ -89,7 +90,7 @@ export class ContactsService implements Resolve<any> {
         if (params && params.page) {
             url += '?page=' + params.page + '&limit=' + params.limit;
         } else {
-            url += '?page=1&limit=100';
+            url += '?page=1&limit=10';
         }
         if (params && params.firstname) {
             url += '&firstname=' + params.firstname;
@@ -100,9 +101,9 @@ export class ContactsService implements Resolve<any> {
         return new Promise((resolve, reject) => {
             this._httpClient.get(url, this._appService.httpOptions)
                 .subscribe((response: any) => {
-                    this.contacts = response.docs;
+                    this.contacts = response;
 
-                    if (this.filterBy === 'starred') {
+                    /* if (this.filterBy === 'starred') {
                         this.contacts = this.contacts.filter(_contact => {
                             return this.user.starred.includes(_contact._id);
                         });
@@ -114,15 +115,15 @@ export class ContactsService implements Resolve<any> {
                         });
                     }
 
-                    /* if (this.searchText && this.searchText !== '') {
+                    if (this.searchText && this.searchText !== '') {
                         this.contacts = FuseUtils.filterArrayByString(this.contacts, this.searchText);
                     } */
 
-                    this.contacts = this.contacts.map(contact => {
+                    /* this.contacts = this.contacts.map(contact => {
                         return new Contact(contact);
-                    });
+                    }); */
 
-                    this.onContactsChanged.next(this.contacts);
+                    this.onContactsChanged.next(this.contacts.docs);
                     resolve(this.contacts);
                 }, (error) => {
                     this._appService.handleError(error);

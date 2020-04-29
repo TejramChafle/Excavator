@@ -29,33 +29,33 @@
     </ng-container>
 
     <!-- Created by Column -->
-    <ng-container matColumnDef="created_by" fxShow.gt-lg>
-        <mat-header-cell *matHeaderCellDef>Created by</mat-header-cell>
-        <mat-cell *matCellDef="let tag">
+    <ng-container matColumnDef="created_by">
+        <mat-header-cell *matHeaderCellDef fxShow.gt-lg>Created by</mat-header-cell>
+        <mat-cell *matCellDef="let tag" fxShow.gt-md>
             <p class="text-truncate font-weight-600">{{tag.created_by.firstname}} {{tag.created_by.lastname}}</p>
         </mat-cell>
     </ng-container>
 
     <!-- Created on Column -->
-    <ng-container matColumnDef="created_date" fxShow.gt-lg>
-        <mat-header-cell *matHeaderCellDef>Created on</mat-header-cell>
-        <mat-cell *matCellDef="let tag">
+    <ng-container matColumnDef="created_date" >
+        <mat-header-cell *matHeaderCellDef fxShow.gt-lg>Created on</mat-header-cell>
+        <mat-cell *matCellDef="let tag" fxShow.gt-md>
             <p class="text-truncate font-weight-600">{{tag.created_date | date}}</p>
         </mat-cell>
     </ng-container>
 
     <!-- Updated by Column -->
-    <ng-container matColumnDef="updated_by" fxShow.gt-sm>
-        <mat-header-cell *matHeaderCellDef>Updated by</mat-header-cell>
-        <mat-cell *matCellDef="let tag">
+    <ng-container matColumnDef="updated_by" >
+        <mat-header-cell *matHeaderCellDef fxShow.gt-md>Updated by</mat-header-cell>
+        <mat-cell *matCellDef="let tag" fxShow.gt-md>
             <p class="text-truncate font-weight-600">{{tag.updated_by.firstname}} {{tag.updated_by.lastname}}</p>
         </mat-cell>
     </ng-container>
 
     <!-- Updated on Column -->
-    <ng-container matColumnDef="updated_date" fxShow.gt-sm>
-        <mat-header-cell *matHeaderCellDef>Updated on</mat-header-cell>
-        <mat-cell *matCellDef="let tag">
+    <ng-container matColumnDef="updated_date">
+        <mat-header-cell *matHeaderCellDef fxShow.gt-md>Updated on</mat-header-cell>
+        <mat-cell *matCellDef="let tag" fxShow.gt-md>
             <p class="text-truncate font-weight-600">{{tag.updated_date | date}}</p>
         </mat-cell>
     </ng-container>
@@ -99,5 +99,13 @@
              [@animate]="{value:'*',params:{y:'100%'}}">
     </mat-row>
 </mat-table>
+
+<!-- PAGINATION -->
+<mat-paginator 
+    [length]="_tagService.tags.total" 
+    [pageSize]="_tagService.tags.limit" 
+    [pageSizeOptions]="[10, 20, 50, 100]"
+    (page)="onPageChange($event)">
+</mat-paginator>
 
 

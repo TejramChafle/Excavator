@@ -13,7 +13,7 @@ import { ContactFormDialogComponent } from 'app/main/configuration/contacts/cont
 import { AppService } from 'app/app.service';
 
 @Component({
-    selector: 'contacts-contact-list',
+    selector: 'contact-list',
     templateUrl: './contact-list.component.html',
     styleUrls: ['./contact-list.component.scss'],
     encapsulation: ViewEncapsulation.None,
@@ -43,7 +43,7 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
      * @param {MatDialog} _matDialog
      */
     constructor(
-        private _contactsService: ContactsService,
+        public _contactsService: ContactsService,
         public _matDialog: MatDialog,
         public _appService: AppService
     ) {
@@ -96,6 +96,8 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
             .subscribe(() => {
                 this._contactsService.deselectContacts();
             });
+
+        console.log('this.contacts : ', this.contacts);
     }
 
     /**
@@ -214,6 +216,15 @@ export class ContactsContactListComponent implements OnInit, OnDestroy {
             this.confirmDialogRef = null;
         });
 
+    }
+
+
+    // Load data on page change
+    onPageChange(page) {
+        console.log(page);
+        this._contactsService.getContacts({ page: page.pageIndex + 1, limit: page.pageSize }).then(result => {
+            console.log('on page change : ', result);
+        });
     }
 }
 

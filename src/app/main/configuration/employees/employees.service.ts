@@ -20,7 +20,8 @@ export class EmployeesService implements Resolve<any> {
     onSearchTextChanged: Subject<any>;
     onFilterChanged: Subject<any>;
 
-    employees: Employee[];
+    // employees: Employee[];
+    employees: any = {};
     user: any;
     selectedEmployees: string[] = [];
 
@@ -97,7 +98,7 @@ export class EmployeesService implements Resolve<any> {
         if (params && params.page) {
             url += '?page=' + params.page + '&limit=' + params.limit;
         } else {
-            url += '?page=1&limit=100';
+            url += '?page=1&limit=10';
         }
         if (params && params.firstname) {
             url += '&firstname=' + params.firstname;
@@ -115,29 +116,8 @@ export class EmployeesService implements Resolve<any> {
         return new Promise((resolve, reject) => {
             this._httpClient.get(url, this._appService.httpOptions)
                 .subscribe((response: any) => {
-                    this.employees = response.docs;
-
-                    if (this.filterBy === 'starred') {
-                        this.employees = this.employees.filter(_employee => {
-                            return this.user.starred.includes(_employee._id);
-                        });
-                    }
-
-                    if (this.filterBy === 'frequent') {
-                        this.employees = this.employees.filter(_employee => {
-                            return this.user.frequentEmployees.includes(_employee._id);
-                        });
-                    }
-
-                    /* if (this.searchText && this.searchText !== '') {
-                        this.employees = FuseUtils.filterArrayByString(this.employees, this.searchText);
-                    } */
-
-                    this.employees = this.employees.map(employee => {
-                        return new Employee(employee);
-                    });
-
-                    this.onEmployeesChanged.next(this.employees);
+                    this.employees = response;
+                    this.onEmployeesChanged.next(this.employees.docs);
                     resolve(this.employees);
                 }, (error) => {
                     this._appService.handleError(error);

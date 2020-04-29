@@ -43,7 +43,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
      * @param {MatDialog} _matDialog
      */
     constructor(
-        private _employeesService: EmployeesService,
+        public _employeesService: EmployeesService,
         public _matDialog: MatDialog,
         public _appService: AppService
     ) {
@@ -214,6 +214,14 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
             this.confirmDialogRef = null;
         });
 
+    }
+
+    // Load data on page change
+    onPageChange(page) {
+        console.log(page);
+        this._employeesService.getEmployees({ page: page.pageIndex + 1, limit: page.pageSize }).then(result => {
+            console.log('on page change : ', result);
+        });
     }
 }
 

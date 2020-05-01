@@ -15,7 +15,7 @@ import { AppService } from 'app/app.service';
 @Component({
     selector: 'tag-list',
     templateUrl: './tag-list.component.html',
-    styleUrls: ['./tag-list.component.scss'],
+    // styleUrls: ['./tag-list.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })

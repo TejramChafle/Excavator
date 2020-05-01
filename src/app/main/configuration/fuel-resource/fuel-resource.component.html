@@ -1,4 +1,4 @@
-<div id="tag" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+<div id="fuel-resource" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
     <!-- HEADER -->
     <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start"
@@ -17,7 +17,7 @@
                           [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Tags
+                    Fuel Resources
                 </span>
             </div>
 
@@ -51,7 +51,7 @@
 
             <!-- CONTENT -->
             <div class="content">
-                <tag-list></tag-list>
+                <fuel-resource-list></fuel-resource-list>
             </div>
             <!-- / CONTENT -->
 
@@ -64,8 +64,8 @@
 </div>
 
 <!-- ADD CONTACT BUTTON -->
-<button mat-fab class="accent" id="add-record-button" (click)="newTag()" aria-label="add tag"
-        [@animate]="{value:'*', params:{delay:'300ms',scale:'.2'}}">
-    <mat-icon>label</mat-icon>
+<button mat-fab class="accent" id="add-record-button" (click)="newFuelResource()" aria-label="add fuel resource"
+        [@animate]="{value:'*', params:{delay:'300ms',scale:'.2'}}">+
+    <mat-icon>local_gas_station</mat-icon>
 </button>
 <!-- / ADD CONTACT BUTTON -->

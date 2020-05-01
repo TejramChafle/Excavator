@@ -114,9 +114,6 @@
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Type</mat-label>
                     <mat-icon matSuffix class="secondary-text">lable</mat-icon>
-                    <!-- <select matNativeControl formControlName="tag">
-                        <option *ngFor="let tag of _tagService.tags.docs" [value]="tag.name"> {{tag.name}}</option>
-                    </select> -->
                     <mat-select matNativeControl formControlName="tag">
                         <mat-option *ngFor="let tag of _tagService.tags.docs" [value]="tag._id"> {{tag.name}}</mat-option>
                     </mat-select>

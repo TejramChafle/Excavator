@@ -7,20 +7,20 @@ import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
-import { TagService } from 'app/main/configuration/tag/tag.service';
-import { TagFormDialogComponent } from 'app/main/configuration/tag/tag-form/tag-form.component';
+import { FuelResourceService } from 'app/main/configuration/fuel-resource/fuel-resource.service';
+import { FuelResourceFormDialogComponent } from 'app/main/configuration/fuel-resource/fuel-resource-form/fuel-resource-form.component';
 
 @Component({
-    selector: 'tag',
-    templateUrl: './tag.component.html',
-    styleUrls: ['./tag.theme.scss'],
+    selector: 'fuel-resource',
+    templateUrl: './fuel-resource.component.html',
+    styleUrls: ['./fuel-resource.theme.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
 
-export class TagComponent implements OnInit, OnDestroy {
+export class FuelResourceComponent implements OnInit, OnDestroy {
     dialogRef: any;
-    hasSelectedTag: boolean;
+    hasSelectedFuelResource: boolean;
     searchInput: FormControl;
 
     // Private
@@ -29,12 +29,12 @@ export class TagComponent implements OnInit, OnDestroy {
     /**
      * Constructor
      *
-     * @param {TagService} _tagService
+     * @param {FuelResourceService} _resourceService
      * @param {FuseSidebarService} _fuseSidebarService
      * @param {MatDialog} _matDialog
      */
     constructor(
-        private _tagService: TagService,
+        private _resourceService: FuelResourceService,
         private _fuseSidebarService: FuseSidebarService,
         private _matDialog: MatDialog
     ) {
@@ -53,10 +53,10 @@ export class TagComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-        this._tagService.onSelectedTagChanged
+        this._resourceService.onSelectedFuelResourceChanged
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(selectedTag => {
-                this.hasSelectedTag = selectedTag.length > 0;
+            .subscribe(selectedFuelResource => {
+                this.hasSelectedFuelResource = selectedFuelResource.length > 0;
             });
 
         this.searchInput.valueChanges
@@ -66,7 +66,7 @@ export class TagComponent implements OnInit, OnDestroy {
                 distinctUntilChanged()
             )
             .subscribe(searchText => {
-                this._tagService.onSearchTextChanged.next(searchText);
+                this._resourceService.onSearchTextChanged.next(searchText);
             });
     }
 
@@ -84,24 +84,23 @@ export class TagComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * New tag
+     * New resource
      */
-    newTag(): void {
-        this.dialogRef = this._matDialog.open(TagFormDialogComponent, {
+    newFuelResource(): void {
+        this.dialogRef = this._matDialog.open(FuelResourceFormDialogComponent, {
             panelClass: 'form-dialog',
             data: {
                 action: 'new'
             }
         });
 
-        this.dialogRef.afterClosed()
-            .subscribe((response: FormGroup) => {
-                if (!response) {
-                    return;
-                }
+        this.dialogRef.afterClosed().subscribe((response: FormGroup) => {
+            if (!response) {
+                return;
+            }
 
-                this._tagService.updateTag(response.getRawValue());
-            });
+            // this._resourceService.updateFuelResource(response.getRawValue());
+        });
     }
 
     /**

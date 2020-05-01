@@ -10,23 +10,37 @@
 
     <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
 
-        <form [formGroup]="tagForm">
+        <form [formGroup]="resourceForm">
 
             <div fxLayout="row" fxLayoutAlign="start start">
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Name</mat-label>
-                    <mat-icon matSuffix class="secondary-text">label</mat-icon>
+                    <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
                     <input name="name" formControlName="name" matInput required>
                 </mat-form-field>
             </div>
 
             <div fxLayout="row" fxLayoutAlign="start start">
                 <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Purpose</mat-label>
-                    <!-- <mat-icon matSuffix class="secondary-text">star</mat-icon> -->
-                    <mat-select matNativeControl required formControlName="purpose">
-                        <mat-option *ngFor="let purpose of purposes" [value]="purpose"> {{purpose}}</mat-option>
-                    </mat-select>
+                    <mat-label>Place</mat-label>
+                    <mat-icon matSuffix class="secondary-text">place</mat-icon>
+                    <input name="place" formControlName="place" matInput required>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Owner/Contact Person</mat-label>
+                    <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                    <input name="owner" formControlName="owner" matInput>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Office Phone</mat-label>
+                    <mat-icon matSuffix class="secondary-text">phone</mat-icon>
+                    <input name="phone" formControlName="phone" matInput>
                 </mat-form-field>
             </div>
 
@@ -39,8 +53,8 @@
         <button *ngIf="action !== 'edit'"
                 mat-button
                 class="save-button"
-                (click)="onSubmit(tagForm.value)"
-                [disabled]="tagForm.invalid"
+                (click)="onSubmit(resourceForm.value)"
+                [disabled]="resourceForm.invalid"
                 aria-label="SAVE">
             ADD
         </button>
@@ -48,8 +62,8 @@
         <button *ngIf="action === 'edit'"
                 mat-button
                 class="save-button"
-                (click)="onSubmit(tagForm.value)"
-                [disabled]="tagForm.invalid"
+                (click)="onSubmit(resourceForm.value)"
+                [disabled]="resourceForm.invalid"
                 aria-label="SAVE">
             SAVE
         </button>

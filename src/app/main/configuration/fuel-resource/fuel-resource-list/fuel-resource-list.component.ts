@@ -8,27 +8,27 @@ import { takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 
-import { ContactsService } from 'app/main/configuration/contacts/contacts.service';
-import { ContactFormDialogComponent } from 'app/main/configuration/contacts/contact-form/contact-form.component';
+import { FuelResourceService } from 'app/main/configuration/fuel-resource/fuel-resource.service';
+import { FuelResourceFormDialogComponent } from 'app/main/configuration/fuel-resource/fuel-resource-form/fuel-resource-form.component';
 import { AppService } from 'app/app.service';
 
 @Component({
-    selector: 'contact-list',
-    templateUrl: './contact-list.component.html',
-    // styleUrls: ['./contact-list.component.scss'],
+    selector: 'fuel-resource-list',
+    templateUrl: './fuel-resource-list.component.html',
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
 
-export class ContactListComponent implements OnInit, OnDestroy {
+export class FuelResourceListComponent implements OnInit, OnDestroy {
     @ViewChild('dialogContent', { static: false })
     dialogContent: TemplateRef<any>;
 
-    contacts: any;
+    resources: any;
     user: any;
     dataSource: FilesDataSource | null;
-    displayedColumns = ['firstname', 'gender', 'email', 'mobile', 'phone', 'designation', 'company', 'type', 'buttons'];
-    selectedContacts: any[];
+    // 'updatedby', ,'createdon', 'updatedon', 
+    displayedColumns = ['name', 'place', 'created_by', 'created_date', 'updated_by', 'updated_date', 'buttons'];
+    selectedFuelResource: any[];
     checkboxes: {};
     dialogRef: any;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
@@ -39,11 +39,11 @@ export class ContactListComponent implements OnInit, OnDestroy {
     /**
      * Constructor
      *
-     * @param {ContactsService} _contactsService
+     * @param {FuelResourceService} _resourceService
      * @param {MatDialog} _matDialog
      */
     constructor(
-        public _contactsService: ContactsService,
+        private _resourceService: FuelResourceService,
         public _matDialog: MatDialog,
         public _appService: AppService
     ) {
@@ -59,45 +59,45 @@ export class ContactListComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-        this.dataSource = new FilesDataSource(this._contactsService);
+        this.dataSource = new FilesDataSource(this._resourceService);
 
-        this._contactsService.onContactsChanged
+        this._resourceService.onFuelResourceChanged
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(contacts => {
-                this.contacts = contacts;
+            .subscribe(resources => {
+                this.resources = resources;
 
                 this.checkboxes = {};
-                contacts.map(contact => {
-                    this.checkboxes[contact._id] = false;
+                resources.map(resource => {
+                    this.checkboxes[resource._id] = false;
                 });
             });
 
-        this._contactsService.onSelectedContactsChanged
+        this._resourceService.onSelectedFuelResourceChanged
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(selectedContacts => {
+            .subscribe(selectedFuelResource => {
                 for (const id in this.checkboxes) {
                     if (!this.checkboxes.hasOwnProperty(id)) {
                         continue;
                     }
 
-                    this.checkboxes[id] = selectedContacts.includes(id);
+                    this.checkboxes[id] = selectedFuelResource.includes(id);
                 }
-                this.selectedContacts = selectedContacts;
+                this.selectedFuelResource = selectedFuelResource;
             });
 
-        /* this._contactsService.onUserDataChanged
+        /* this._resourceService.onUserDataChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(user => {
                 this.user = user;
             }); */
 
-        this._contactsService.onFilterChanged
+        this._resourceService.onFilterChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(() => {
-                this._contactsService.deselectContacts();
+                this._resourceService.deselectFuelResource();
             });
 
-        console.log('this.contacts : ', this.contacts);
+        console.log('this.dataSource : ', this.dataSource);    
     }
 
     /**
@@ -114,15 +114,15 @@ export class ContactListComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * Edit contact
+     * Edit resource
      *
-     * @param contact
+     * @param resource
      */
-    editContact(contact): void {
-        this.dialogRef = this._matDialog.open(ContactFormDialogComponent, {
-            panelClass: 'contact-form-dialog',
+    editFuelResource(resource): void {
+        this.dialogRef = this._matDialog.open(FuelResourceFormDialogComponent, {
+            panelClass: 'form-dialog',
             data: {
-                contact: contact,
+                resource: resource,
                 action: 'edit'
             }
         });
@@ -132,33 +132,13 @@ export class ContactListComponent implements OnInit, OnDestroy {
                 if (!response) {
                     return;
                 }
-                // const actionType: string = response[0];
-                // const formData: FormGroup = response[1];
-                // switch (actionType) {
-                //     /**
-                //      * Save
-                //      */
-                //     case 'save':
-
-                //         this._contactsService.updateContact(formData.getRawValue());
-
-                //         break;
-                //     /**
-                //      * Delete
-                //      */
-                //     case 'delete':
-
-                //         this.deleteContact(contact);
-
-                //         break;
-                // }
             });
     }
 
     /**
-     * Delete Contact
+     * Delete Fuel Resource
      */
-    deleteContact(contact): void {
+    deleteFuelResource(resource): void {
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });
@@ -167,7 +147,7 @@ export class ContactListComponent implements OnInit, OnDestroy {
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this._contactsService.deleteContact(contact);
+                this._resourceService.deleteFuelResource(resource);
             }
             this.confirmDialogRef = null;
         });
@@ -177,29 +157,29 @@ export class ContactListComponent implements OnInit, OnDestroy {
     /**
      * On selected change
      *
-     * @param contactId
+     * @param resourceId
      */
-    onSelectedChange(contactId): void {
-        this._contactsService.toggleSelectedContact(contactId);
+    onSelectedChange(resourceId): void {
+        this._resourceService.toggleSelectedFuelResource(resourceId);
     }
 
     /**
      * Toggle star
      *
-     * @param contactId
+     * @param resourceId
      */
-    toggleStar(contactId): void {
-        if (this.user.starred.includes(contactId)) {
-            this.user.starred.splice(this.user.starred.indexOf(contactId), 1);
+    toggleStar(resourceId): void {
+        if (this.user.starred.includes(resourceId)) {
+            this.user.starred.splice(this.user.starred.indexOf(resourceId), 1);
         }
         else {
-            this.user.starred.push(contactId);
+            this.user.starred.push(resourceId);
         }
 
-        this._contactsService.updateUserData(this.user);
+        this._resourceService.updateUserData(this.user);
     }
 
-    disableContact(contact): void {
+    disableFuelResource(resource): void {
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });
@@ -208,21 +188,20 @@ export class ContactListComponent implements OnInit, OnDestroy {
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                contact.is_active = false;
-                contact.updated_by = this._appService.user._id;
-                contact.updated_date = new Date();
-                this._contactsService.updateContact(contact);
+                resource.is_active = false;
+                resource.updated_by = this._appService.user._id;
+                resource.updated_date = new Date();
+                this._resourceService.updateFuelResource(resource);
             }
             this.confirmDialogRef = null;
         });
 
     }
 
-
     // Load data on page change
     onPageChange(page) {
         console.log(page);
-        this._contactsService.getContacts({ page: page.pageIndex + 1, limit: page.pageSize }).then(result => {
+        this._resourceService.getFuelResource({ page: page.pageIndex + 1, limit: page.pageSize }).then(result => {
             console.log('on page change : ', result);
         });
     }
@@ -233,10 +212,10 @@ export class FilesDataSource extends DataSource<any>
     /**
      * Constructor
      *
-     * @param {ContactsService} _contactsService
+     * @param {FuelResourceService} _resourceService
      */
     constructor(
-        private _contactsService: ContactsService
+        private _resourceService: FuelResourceService
     ) {
         super();
     }
@@ -246,7 +225,7 @@ export class FilesDataSource extends DataSource<any>
      * @returns {Observable<any[]>}
      */
     connect(): Observable<any[]> {
-        return this._contactsService.onContactsChanged;
+        return this._resourceService.onFuelResourceChanged;
     }
 
     /**

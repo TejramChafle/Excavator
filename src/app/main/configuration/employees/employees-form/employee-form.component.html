@@ -6,12 +6,6 @@
                 <mat-icon>close</mat-icon>
             </button>
         </mat-toolbar-row>
-
-        <!-- <mat-toolbar-row class="toolbar-bottom py-16" fxLayout="column" fxLayoutAlign="center center">
-            <img [src]="contact.avatar" class="avatar contact-avatar huge m-0"
-                 [alt]="contact.firstname"/>
-            <div class="contact-name mt-8">{{contact.firstname}} {{contact.lastname}}</div>
-        </mat-toolbar-row> -->
     </mat-toolbar>
 
     <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
@@ -38,10 +32,15 @@
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Gender</mat-label>
                     <mat-icon matSuffix class="secondary-text">star</mat-icon>
-                    <select matNativeControl required formControlName="gender">
+                    <!-- <select matNativeControl required formControlName="gender">
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
-                    </select>
+                    </select> -->
+
+                    <mat-select matNativeControl required formControlName="gender">
+                        <mat-option value="Male">Male</mat-option>
+                        <mat-option value="Female">Female</mat-option>
+                    </mat-select>
                 </mat-form-field>
             </div>
 
@@ -114,15 +113,6 @@
     </div>
 
     <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
-
-        <!-- <button *ngIf="action === 'edit'"
-                mat-button
-                class="mr-8"
-                (click)="matDialogRef.close(['delete',employeeForm])"
-                aria-label="Delete"
-                matTooltip="Delete">
-            DELETE
-        </button> -->
 
         <button *ngIf="action !== 'edit'"
                 mat-button

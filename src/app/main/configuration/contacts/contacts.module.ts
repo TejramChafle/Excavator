@@ -17,7 +17,7 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 
 import { ContactsComponent } from 'app/main/configuration/contacts/contacts.component';
 import { ContactsService } from 'app/main/configuration/contacts/contacts.service';
-import { ContactsContactListComponent } from 'app/main/configuration/contacts/contact-list/contact-list.component';
+import { ContactListComponent } from 'app/main/configuration/contacts/contact-list/contact-list.component';
 import { ContactsSelectedBarComponent } from 'app/main/configuration/contacts/selected-bar/selected-bar.component';
 import { ContactsMainSidebarComponent } from 'app/main/configuration/contacts/sidebars/main/main.component';
 import { ContactFormDialogComponent } from 'app/main/configuration/contacts/contact-form/contact-form.component';
@@ -37,7 +37,7 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         ContactsComponent,
-        ContactsContactListComponent,
+        ContactListComponent,
         ContactsSelectedBarComponent,
         ContactsMainSidebarComponent,
         ContactFormDialogComponent

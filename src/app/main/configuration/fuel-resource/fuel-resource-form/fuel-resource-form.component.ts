@@ -2,54 +2,49 @@ import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
-import { Tag } from 'app/main/configuration/tag/tag.model';
-import { TagService } from '../tag.service';
+import { FuelResource } from 'app/main/configuration/fuel-resource/fuel-resource.model';
+import { FuelResourceService } from '../fuel-resource.service';
 import { AppService } from 'app/app.service';
-import { tagPurpose } from 'app/app.config';
 
 @Component({
-    selector: 'tag-form-dialog',
-    templateUrl: './tag-form.component.html',
-    // styleUrls: ['./tag-form.component.scss'],
+    selector: 'fuel-resource-form-dialog',
+    templateUrl: './fuel-resource-form.component.html',
     encapsulation: ViewEncapsulation.None
 })
 
-export class TagFormDialogComponent {
+export class FuelResourceFormDialogComponent {
     action: string;
-    tag: Tag;
-    tagForm: FormGroup;
+    resource: FuelResource;
+    resourceForm: FormGroup;
     dialogTitle: string;
     purposes: Array<string>;
     /**
      * Constructor
      *
-     * @param {MatDialogRef<TagFormDialogComponent>} matDialogRef
+     * @param {MatDialogRef<FuelResourceFormDialogComponent>} matDialogRef
      * @param _data
      * @param {FormBuilder} _formBuilder
      */
     constructor(
-        public matDialogRef: MatDialogRef<TagFormDialogComponent>,
+        public matDialogRef: MatDialogRef<FuelResourceFormDialogComponent>,
         @Inject(MAT_DIALOG_DATA) private _data: any,
         private _formBuilder: FormBuilder,
-        private _tagService: TagService,
+        private _resourceService: FuelResourceService,
         private _appService: AppService
     ) {
         // Set the defaults
         this.action = _data.action;
 
         if (this.action === 'edit') {
-            this.dialogTitle = 'Edit Tag';
-            this.tag = _data.tag;
+            this.dialogTitle = 'Edit Fuel Resource';
+            this.resource = _data.resource;
         }
         else {
-            this.dialogTitle = 'New Tag';
-            this.tag = new Tag({});
+            this.dialogTitle = 'New Fuel Resource';
+            this.resource = new FuelResource({});
         }
 
-        this.tagForm = this.createTagForm();
-
-        // Set the purpose options
-        this.purposes = tagPurpose;
+        this.resourceForm = this.createFuelResourceForm();
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -57,27 +52,29 @@ export class TagFormDialogComponent {
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * Create tag form
+     * Create resource form
      *
      * @returns {FormGroup}
      */
-    createTagForm(): FormGroup {
+    createFuelResourceForm(): FormGroup {
         return this._formBuilder.group({
-            _id:        [this.tag._id],
-            name:  [this.tag.name],
-            purpose:   [this.tag.purpose],
+            _id:    [this.resource._id],
+            name:   [this.resource.name],
+            place:  [this.resource.place],
+            owner:  [this.resource.owner],
+            phone:  [this.resource.phone],
         });
     }
 
 
-    // Do save/update tag information on click of add/save button
+    // Do save/update resource information on click of add/save button
     onSubmit(formData): void {        
-        // If the tag id exist then update and save the tag
+        // If the resource id exist then update and save the resource
         if (formData._id) {
             formData.updated_by = this._appService.user._id;
             formData.updated_date = new Date();
-            this._tagService.updateTag(formData).then((response) => {
-                this._appService.handleMessage(response.message || 'Tag information updated successfully.', 'Success');
+            this._resourceService.updateFuelResource(formData).then((response) => {
+                this._appService.handleMessage(response.message || 'Fuel resource information updated successfully.', 'Success');
                 this.matDialogRef.close(true);
             });
         } else {
@@ -85,8 +82,8 @@ export class TagFormDialogComponent {
             formData.updated_by = this._appService.user._id;
             formData.created_date = new Date();
             formData.updated_date = new Date();
-            this._tagService.createTag(formData).then((response) => {
-                this._appService.handleMessage(response.message || 'New tag created successfully.', 'Success');
+            this._resourceService.createFuelResource(formData).then((response) => {
+                this._appService.handleMessage(response.message || 'New fuel resource created successfully.', 'Success');
                 this.matDialogRef.close(true);
             });
         }

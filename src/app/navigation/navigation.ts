@@ -3,16 +3,16 @@ import { FuseNavigation } from '@fuse/types';
 export const navigation: FuseNavigation[] = [
     {
         id       : 'applications',
-        title    : 'Applications',
-        translate: 'NAV.APPLICATIONS',
+        title    : 'Dashboard',
+        // translate: 'NAV.APPLICATIONS',
         type     : 'group',
         children : [
             {
                 id       : 'sample',
-                title    : 'Sample',
-                translate: 'NAV.SAMPLE.TITLE',
+                title    : 'Dashboard',
+                // translate: 'NAV.SAMPLE.TITLE',
                 type     : 'item',
-                icon     : 'email',
+                icon     : 'home',
                 url      : '/sample',
                 badge    : {
                     title    : '25',
@@ -20,7 +20,15 @@ export const navigation: FuseNavigation[] = [
                     bg       : '#F44336',
                     fg       : '#FFFFFF'
                 }
-            },
+            }
+        ]
+    },
+    {
+        id       : 'configuration',
+        title    : 'Configuration',
+        // translate: 'NAV.APPLICATIONS',
+        type     : 'group',
+        children : [
             {
                 id       : 'contacts',
                 title    : 'Contacts',
@@ -41,6 +49,13 @@ export const navigation: FuseNavigation[] = [
                 type     : 'item',
                 icon     : 'label',
                 url      : '/tag'
+            },
+            {
+                id       : 'fuel-resource',
+                title    : 'Fuel Resource',
+                type     : 'item',
+                icon     : 'local_gas_station',
+                url      : '/fuel-resource'
             }
         ]
     }

@@ -27,11 +27,20 @@ import { ConfigModule } from './main/configuration/config.module';
 import { ContactsModule } from './main/configuration/contacts/contacts.module';
 import { EmployeesModule } from './main/configuration/employees/employees.module';
 import { TagModule } from './main/configuration/tag/tag.module';
+import { FuelResourceModule } from './main/configuration/fuel-resource/fuel-resource.module';
+
+import { Error404Module } from './main/errors/404/error-404.module';
 
 const appRoutes: Routes = [
     {
+        path: '',
+        redirectTo: '/sample',
+        pathMatch : 'full',
+        canActivate: [ AuthGuard ]
+    },
+    {
         path: '**',
-        redirectTo: 'sample',
+        redirectTo: '/error-404',
         canActivate: [ AuthGuard ]
     }
 ];
@@ -70,7 +79,10 @@ const appRoutes: Routes = [
         // ConfigModule
         ContactsModule,
         EmployeesModule,
-        TagModule
+        TagModule,
+        FuelResourceModule,
+
+        Error404Module
     ],
     entryComponents: [
         FuseAlertDialogComponent

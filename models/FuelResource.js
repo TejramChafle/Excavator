@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+const Paginate = require('mongoose-paginate');
 
 var FuelResourceSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
@@ -11,14 +12,17 @@ var FuelResourceSchema = new mongoose.Schema({
         required: true
     },
     owner: {
-        type: String,
-        required: true
-    },
-    mobile: {
-        type: String,
-        required: true
+        /* type: String,
+        required: true */
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Contact',
+        required: false
     },
     phone: {
+        type: String,
+        required: false
+    },
+    /* mobile: {
         type: String,
         required: true
     },
@@ -29,7 +33,7 @@ var FuelResourceSchema = new mongoose.Schema({
     description: {
         type: String,
         required: false
-    },
+    }, */
     // soft delete flag
     is_active: {
         type: Boolean,
@@ -38,13 +42,13 @@ var FuelResourceSchema = new mongoose.Schema({
     // created by user id
     created_by: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Contact',
         required: true
     },
     // last updated by user id
     updated_by: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Contact',
         required: true
     },
     // date & time of record creation
@@ -60,4 +64,5 @@ var FuelResourceSchema = new mongoose.Schema({
     }
 });
 
+FuelResourceSchema.plugin(Paginate);
 module.exports = mongoose.model('FuelResource', FuelResourceSchema);

@@ -1,11 +1,11 @@
 @import "src/@fuse/scss/fuse";
-@mixin tags-theme($theme) {
+@mixin fuel-resources-theme($theme) {
 
     $background: map-get($theme, background);
     $foreground: map-get($theme, foreground);
     $is-dark: map-get($theme, is-dark);
 
-    #tags, #tag {
+    #fuel-resources {
 
         .header {
 
@@ -64,7 +64,7 @@
     } 
 }
 
-#tag {
+#fuel-resource {
 
     .header {
 

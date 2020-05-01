@@ -38,6 +38,9 @@ const routes: Routes = [
     ],
     entryComponents: [
         TagFormDialogComponent
+    ],
+    exports: [
+        TagComponent
     ]
 })
 

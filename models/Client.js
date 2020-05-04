@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Paginate = require('mongoose-paginate');
 
 const ClientSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
@@ -9,11 +10,7 @@ const ClientSchema = new mongoose.Schema({
     contact_person: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Contact',
-        required: true
-    },
-    mobile: {
-        type: String,
-        required: true
+        required: false
     },
     phone: {
         type: String,
@@ -39,13 +36,13 @@ const ClientSchema = new mongoose.Schema({
     // created by user id
     created_by: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Contact',
         required: true
     },
     // last updated by user id
     updated_by: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Contact',
         required: true
     },
     // date & time of record creation
@@ -61,6 +58,7 @@ const ClientSchema = new mongoose.Schema({
     }
 });
 
+ClientSchema.plugin(Paginate);
 const Client = module.exports = mongoose.model('Client', ClientSchema);
 
 /* module.exports.getUserByUsername = function(username, cb) {

@@ -23,11 +23,7 @@ import { AuthModule } from './main/authentication/auth.module';
 import { AppService } from './app.service';
 import { AuthGuard } from './guard/auth.guard';
 import { FuseAlertDialogComponent } from '@fuse/components/alert-dialog/alert-dialog.component';
-import { ConfigModule } from './main/configuration/config.module';
-import { ContactsModule } from './main/configuration/contacts/contacts.module';
-import { EmployeesModule } from './main/configuration/employees/employees.module';
-import { TagModule } from './main/configuration/tag/tag.module';
-import { FuelResourceModule } from './main/configuration/fuel-resource/fuel-resource.module';
+import { ConfigurationModule } from './main/configuration/configuration.module';
 
 import { Error404Module } from './main/errors/404/error-404.module';
 
@@ -39,10 +35,15 @@ const appRoutes: Routes = [
         canActivate: [ AuthGuard ]
     },
     {
+        path: 'configuration',
+        loadChildren: './main/configuration/configuration.module#ConfigurationModule',
+        // canActivate: [ AuthGuard ]
+    },
+    /* {
         path: '**',
         redirectTo: '/error-404',
         canActivate: [ AuthGuard ]
-    }
+    }, */
 ];
 
 @NgModule({
@@ -76,13 +77,10 @@ const appRoutes: Routes = [
         LayoutModule,
         SampleModule,
         AuthModule,
-        // ConfigModule
-        ContactsModule,
-        EmployeesModule,
-        TagModule,
-        FuelResourceModule,
 
-        Error404Module
+        Error404Module,
+
+        ConfigurationModule
     ],
     entryComponents: [
         FuseAlertDialogComponent

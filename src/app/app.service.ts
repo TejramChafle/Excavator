@@ -39,15 +39,16 @@ export class AppService {
 
     // Handle errors/http errors from http services throughout the application
     handleError(response): void {
-        console.log('errpr response', response);
         // If the user token is expired, redirect user to lock page to enter the password
         if (response.status === 401 && response.error.message === 'jwt expired') {
             this._router.navigate(['auth/lock']);
-        } if (response.status === 500 && response.error.error.name == 'ValidationError') {
-            this.handleMessage(response.error.error.message, 'Validation Error');
         } else {
             this.handleMessage(response.error.message || response.message, response.statusText);
         }
+
+        /* if (response.status === 500 && response.error.error.name == 'ValidationError') {
+            this.handleMessage(response.error.error.message, 'Validation Error');
+        } */
     }
 
 

@@ -25,7 +25,7 @@ import { AuthGuard } from 'app/guard/auth.guard';
 
 const routes: Routes = [
     {
-        path: 'contacts',
+        path: 'configuration/contacts',
         component: ContactsComponent,
         resolve: {
             contacts: ContactsService

@@ -12,7 +12,7 @@ import { AuthGuard } from 'app/guard/auth.guard';
 
 const routes: Routes = [
     {
-        path: 'tag',
+        path: 'configuration/tag',
         component: TagComponent,
         resolve: {
             tags: TagService

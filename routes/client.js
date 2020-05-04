@@ -22,7 +22,7 @@ var router      = express.Router();
  */
 // GET CLIENTS (Only active) WITH filter & pagination
 router.get('/', auth, (req, resp) => {
-    Client.where({ is_active: true }).exec().then(clients => {
+    /* Client.where({ is_active: true }).exec().then(clients => {
         return resp.status(200).json(clients);
     }).catch(error => {
         console.log('error : ', error);
@@ -30,6 +30,22 @@ router.get('/', auth, (req, resp) => {
         return resp.status(500).json({
             error: error
         });
+    }); */
+
+    let filter = {};
+    filter.is_active = req.query.is_active || true;
+    if (req.query.name) filter.name = new RegExp('.*' + req.query.name + '.*', 'i');
+    if (req.query.contact_person) filter.contact_person = req.query.contact_person;
+    if (req.query.phone) filter.phone = new RegExp('.*' + req.query.phone + '.*', 'i');
+    if (req.query.email) filter.email = new RegExp('.*' + req.query.email + '.*', 'i');
+
+    Client.paginate(filter, { sort: { _id: req.query.sort_order }, page: parseInt(req.query.page), limit: parseInt(req.query.limit), populate: ['contact_person', 'created_by', 'updated_by'] }, (error, result) => {
+        // 500 : Internal Sever Error. The request was not completed. The server met an unexpected condition.
+        if (error) return resp.status(500).json({
+            error: error
+        });
+
+        return resp.status(200).json(result);
     });
 });
 

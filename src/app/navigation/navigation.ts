@@ -34,28 +34,35 @@ export const navigation: FuseNavigation[] = [
                 title    : 'Contacts',
                 type     : 'item',
                 icon     : 'contacts',
-                url      : '/contacts'
+                url      : '/configuration/contacts'
             },
             {
                 id       : 'employees',
                 title    : 'Employees',
                 type     : 'item',
                 icon     : 'people',
-                url      : '/employees'
+                url      : '/configuration/employees'
             },
             {
                 id       : 'tag',
                 title    : 'Tags',
                 type     : 'item',
                 icon     : 'label',
-                url      : '/tag'
+                url      : '/configuration/tag'
             },
             {
                 id       : 'fuel-resource',
                 title    : 'Fuel Resource',
                 type     : 'item',
                 icon     : 'local_gas_station',
-                url      : '/fuel-resource'
+                url      : '/configuration/fuel-resource'
+            },
+            {
+                id       : 'client',
+                title    : 'Client',
+                type     : 'item',
+                icon     : 'person',
+                url      : '/configuration/client'
             }
         ]
     }

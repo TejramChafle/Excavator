@@ -23,7 +23,7 @@ import { AuthGuard } from 'app/guard/auth.guard';
 
 const routes: Routes = [
     {
-        path: 'employees',
+        path: 'configuration/employees',
         component: EmployeesComponent,
         resolve: {
             employees: EmployeesService

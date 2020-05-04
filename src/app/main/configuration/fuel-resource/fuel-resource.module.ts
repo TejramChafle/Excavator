@@ -12,7 +12,7 @@ import { AuthGuard } from 'app/guard/auth.guard';
 
 const routes: Routes = [
     {
-        path: 'fuel-resource',
+        path: 'configuration/fuel-resource',
         component: FuelResourceComponent,
         resolve: {
             resources: FuelResourceService

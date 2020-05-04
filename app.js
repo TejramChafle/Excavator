@@ -73,11 +73,19 @@ app.use('/auth/register', express.static(path.join(__dirname, 'dist/fuse')));
 app.use('/auth/reset-password', express.static(path.join(__dirname, 'dist/fuse')));
 
 // confiuration
-app.use('/contacts', express.static(path.join(__dirname, 'dist/fuse')));
+// app.use('/contacts', express.static(path.join(__dirname, 'dist/fuse')));
+// app.use('/sample', express.static(path.join(__dirname, 'dist/fuse')));
+// app.use('/fuel-resource', express.static(path.join(__dirname, 'dist/fuse')));
+// app.use('/tag', express.static(path.join(__dirname, 'dist/fuse')));
+// app.use('/employees', express.static(path.join(__dirname, 'dist/fuse')));
 
 app.use('/sample', express.static(path.join(__dirname, 'dist/fuse')));
-app.use('/swagger', express.static(path.join(__dirname, 'swagger')));
 
+app.use('/configuration/contacts', express.static(path.join(__dirname, 'dist/fuse')));
+app.use('/configuration/fuel-resource', express.static(path.join(__dirname, 'dist/fuse')));
+app.use('/configuration/tag', express.static(path.join(__dirname, 'dist/fuse')));
+app.use('/configuration/employees', express.static(path.join(__dirname, 'dist/fuse')));
+app.use('/configuration/client', express.static(path.join(__dirname, 'dist/fuse')));
 
 // Set the route for the incoming request
 app.use('/api/auth', require('./routes/auth'));

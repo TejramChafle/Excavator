@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable, throwError } from 'rxjs';
-import { map, catchError, retry } from 'rxjs/operators';
+import { map, catchError, retry, delay } from 'rxjs/operators';
 
 import { AppService } from '../../app.service';
 import { apiBaseUrl } from '../../app.config';
@@ -23,7 +23,8 @@ export class AuthService {
 
     login(credential): Observable<any> {
         return this._http.post(apiBaseUrl + 'auth/login', credential, httpOptions).pipe(
-            retry(3),
+            // delay(3000),
+            // retry(3),
             map((response) => {
                 return response;
             }),

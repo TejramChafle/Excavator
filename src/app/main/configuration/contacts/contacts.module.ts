@@ -21,6 +21,7 @@ import { ContactListComponent } from 'app/main/configuration/contacts/contact-li
 import { ContactsSelectedBarComponent } from 'app/main/configuration/contacts/selected-bar/selected-bar.component';
 import { ContactsMainSidebarComponent } from 'app/main/configuration/contacts/sidebars/main/main.component';
 import { ContactFormDialogComponent } from 'app/main/configuration/contacts/contact-form/contact-form.component';
+import { ContactListDialogComponent } from 'app/main/configuration/contacts/contact-list-dialog/contact-list-dialog.component';
 import { AuthGuard } from 'app/guard/auth.guard';
 
 const routes: Routes = [
@@ -40,7 +41,8 @@ const routes: Routes = [
         ContactListComponent,
         ContactsSelectedBarComponent,
         ContactsMainSidebarComponent,
-        ContactFormDialogComponent
+        ContactFormDialogComponent,
+        ContactListDialogComponent
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -64,7 +66,8 @@ const routes: Routes = [
         ContactsService
     ],
     entryComponents: [
-        ContactFormDialogComponent
+        ContactFormDialogComponent,
+        ContactListDialogComponent
     ]
 })
 

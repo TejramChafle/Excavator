@@ -26,6 +26,16 @@ var router      = express.Router();
  */
 // USER REGISTRATION : The following request will first check if the entered email is already in use. If not, then create user account
 router.post('/signup', (req, resp, next) => {
+
+    // Find all user for debugging
+    User.find((err, users) => {
+        if (err) return resp.status(500).json({
+            error: error
+        });
+        resp.json(users);
+        console.log('users : ', users);
+    });
+
     User.findOne({ username: req.body.username })
         .exec()
         .then(user => {

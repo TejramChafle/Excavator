@@ -29,8 +29,15 @@ var router      = express.Router();
  */
 // USER LOGIN
 router.post("/login", async (req, resp) => {
+
+    console.log('User : ', User);
+    console.log('req.body : ', req.body);
+
     // CHECK if the username & password matches with the password present in db
     User.findOne({ username: req.body.username, is_active: true }).populate('user').exec().then(async (user) => {
+
+        console.log('user found : ', user);
+
         // Compare the password to match with the password saved in db
         if (!await user.comparePassword(req.body.password)) {
             // 401: Unauthorized. Authentication failed to due mismatch in credentials.
@@ -48,6 +55,7 @@ router.post("/login", async (req, resp) => {
             });
         }
     }).catch(error => {
+        console.log('Login error :', error);
         resp.status(401).json({
             message: 'Authentication failed. Your username or password is incorrect!'
         });

@@ -14,7 +14,9 @@ mongoose.connect('mongodb://localhost/excavator')
     .then(() => console.log('connection succesful'))
     .catch((err) => console.error(err));
 
-// mongoose.connect('mongodb+srv://tejram:wizbeeuser@cluster0-qeebj.azure.mongodb.net/test?retryWrites=true')
+/* mongoose.connect('mongodb+srv://tejram:wizbeeuser@cluster0-qeebj.azure.mongodb.net/excavator?retryWrites=true')
+    .then(() => console.log('connection succesful with azure.mongodb.net'))
+    .catch((err) => console.error(err)); */
 
 var app = express();
 
@@ -51,6 +53,13 @@ app.get('/swagger.json', function (req, res) {
 });
 // ------------------------------------------------------------------------------------
 
+
+
+app.use(function(request, response, next){
+    response.header('Access-Control-Allow-Origin', '*');
+    response.header('Access-Control-Allow-Header', 'Origin, X-Requested-Width, Content-Type, Accept');
+    next();
+});
 
 
 app.use(logger('dev'));

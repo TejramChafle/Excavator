@@ -43,7 +43,7 @@
         "@types/prismjs": "1.16.0",
         "angular-calendar": "0.27.13",
         "angular-in-memory-web-api": "0.8.0",
-        "async": "^2.6.1",
+        "async": "^2.6.4",
         "bcrypt": "^3.0.6",
         "body-parser": "1.19.0",
         "chart.js": "2.8.0",
